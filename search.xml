@@ -15,12 +15,22 @@
           
           <category> 网络安全 </category>
           
+          <category> web安全 </category>
+          
+          <category> 跨站脚本 </category>
+          
+          <category> 分类2 </category>
+          
       </categories>
       
       
         <tags>
             
+            <tag> 网络安全 </tag>
+            
             <tag> web安全 </tag>
+            
+            <tag> XSS </tag>
             
         </tags>
       
